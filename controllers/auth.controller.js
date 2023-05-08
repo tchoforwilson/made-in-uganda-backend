@@ -1,5 +1,7 @@
 import jwt from 'jsonwebtoken';
-import config from '../configurations/config';
+import User from '../models/user.model.js';
+import config from '../configurations/config.js';
+import catchAsync from '../utilities/catchAsync.js';
 
 /**
  * @breif Generate user jwt sign token
@@ -28,6 +30,7 @@ const createSendToken = (user, statusCode, res) => {
   // 3. Send response
   res.status(statusCode).json({
     status: 'success',
+    token,
     data: {
       user,
     },
@@ -52,7 +55,7 @@ const signup = catchAsync(async (req, res, next) => {
   });
 
   // 3. Send response
-  createSendToken(newUser, 201, req, res);
+  createSendToken(newUser, 201, res);
 });
 
 export default {
