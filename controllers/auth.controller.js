@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken';
 import { promisify } from 'util';
 
 import User from '../models/user.model.js';
+import email from '../utilities/email.js';
 import config from '../configurations/config.js';
 import catchAsync from '../utilities/catchAsync.js';
 import AppError from '../utilities/appError.js';
@@ -145,6 +146,53 @@ const restrictTo = (...roles) => {
 };
 
 /**
+ * @breif Controller for user to get token for password reset
+ * after user forgot password
+ */
+const forgotPassword = catchAsync(async (req, res, next) => {
+  // 1. Get user based on posted email and check if user exist
+  const user = await User.findOne({ email: req.body.email });
+
+  if (!user) {
+    return next(new AppError('There is no user with this email address.', 404));
+  }
+
+  // 2. Generate the random reset token
+  const resetToken = user.createPasswordResetToken();
+  await user.save({ validateBeforeSave: false });
+
+  // 3. Send it to the user's email
+  const resetURL = `${req.protocol}://${req.get('host')}/${
+    config.prefix
+  }/users/resetPassword/${resetToken}`;
+
+  // 4. Construct message
+  const message = `Forgot your password? Submit a PATCH request with your new password and passwordConfirm to: ${resetURL}.\nIf you didn't forget your password, please ignore this email!`;
+
+  try {
+    await email.sendEmailDev({
+      email: user.email,
+      subject: 'Your password reset token (valid for 10min)',
+      message,
+    }),
+      // Send response
+      res.status(200).json({
+        status: 'success',
+        message: 'Token sent to email!',
+      });
+  } catch (error) {
+    user.passwordResetToken = undefined;
+    user.passwordResetExpires = undefined;
+    await user.save({ validateBeforeSave: false });
+
+    return next(
+      new AppError('There was an error sending the email. Try again later!'),
+      500
+    );
+  }
+});
+
+/**
  * @breif Controller for updating user password
  */
 const updatePassword = catchAsync(async (req, res, next) => {
@@ -171,5 +219,6 @@ export default {
   login,
   protect,
   restrictTo,
+  forgotPassword,
   updatePassword,
 };
