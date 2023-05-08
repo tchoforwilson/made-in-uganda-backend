@@ -1,7 +1,9 @@
 import jwt from 'jsonwebtoken';
+import { promisify } from 'util';
 import User from '../models/user.model.js';
 import config from '../configurations/config.js';
 import catchAsync from '../utilities/catchAsync.js';
+import AppError from '../utilities/appError.js';
 
 /**
  * @breif Generate user jwt sign token
@@ -58,6 +60,31 @@ const signup = catchAsync(async (req, res, next) => {
   createSendToken(newUser, 201, res);
 });
 
+/**
+ * @breif Controller to login an already registered user
+ */
+const login = catchAsync(async (req, res, next) => {
+  // 1. Get email and password
+  const { email, password } = req.body;
+
+  // 2. Check if email and password exists
+  if (!email || !password) {
+    return next(new AppError('Please provide email and password', 400));
+  }
+
+  // 3. Find user with email
+  const user = await User.findOne({ email }).select('+password');
+
+  // 4. Check if user exists && password is correct
+  if (!user || !(await user.correctPassword(password, user.password))) {
+    return next(new AppError('Incorrect email or password', 400));
+  }
+
+  // 5. If everything ok, send token to client
+  createSendToken(user, 200, req, res);
+});
+
 export default {
   signup,
+  login,
 };
