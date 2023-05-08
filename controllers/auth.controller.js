@@ -125,8 +125,28 @@ const protect = catchAsync(async (req, res, next) => {
   next();
 });
 
+/**
+ * @breif Middleware to restrict route access only to user of
+ * a particular role
+ * @param  {...any} roles -> User roles
+ * @returns {Function}
+ */
+const restrictTo = (...roles) => {
+  return (req, res, next) => {
+    // roles ['admin', 'user']. role='user'
+    if (!roles.includes(req.user.role)) {
+      return next(
+        new AppError('You do not have permission to perform this action', 403)
+      );
+    }
+
+    next();
+  };
+};
+
 export default {
   signup,
   login,
   protect,
+  restrictTo,
 };
