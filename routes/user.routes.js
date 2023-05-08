@@ -6,6 +6,7 @@ const router = Router();
 
 router.post('/signup', authController.signup);
 router.post('/login', authController.login);
+router.post('/forgotPassword', authController.forgotPassword);
 
 // PROTECT ALL ROUTE AFTER THIS MIDDLEWARE
 router.use(authController.protect);
