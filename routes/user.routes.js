@@ -7,4 +7,7 @@ const router = Router();
 router.post('/signup', authController.signup);
 router.post('/login', authController.login);
 
+// PROTECT ALL ROUTE
+router.use(authController.protect);
+
 export default router;
