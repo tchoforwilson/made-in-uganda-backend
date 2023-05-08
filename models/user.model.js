@@ -2,7 +2,7 @@ import { Schema, model } from 'mongoose';
 import bcrypt from 'bcryptjs';
 import validator from 'validator';
 
-import config from '../configurations/config';
+import config from '../configurations/config.js';
 
 const userSchema = new Schema({
   name: {
@@ -19,7 +19,7 @@ const userSchema = new Schema({
   },
   telephone: {
     type: String,
-    validate: [validator.isMobilePhoneLocales],
+    validate: [validator.isMobilePhone],
   },
   store: {
     name: {
