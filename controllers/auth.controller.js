@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import { promisify } from 'util';
+
 import User from '../models/user.model.js';
 import config from '../configurations/config.js';
 import catchAsync from '../utilities/catchAsync.js';
@@ -84,7 +85,48 @@ const login = catchAsync(async (req, res, next) => {
   createSendToken(user, 200, req, res);
 });
 
+const protect = catchAsync(async (req, res, next) => {
+  // 1. Get token and check if it's there
+  let token;
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith('Bearer')
+  ) {
+    token = req.headers.authorization.split(' ')[1];
+  }
+
+  if (!token) {
+    return next(
+      new AppError('You are not logged in! Please log in to get access.', 401)
+    );
+  }
+
+  // 2. Token verification
+  const decoded = await promisify(jwt.verify)(token, config.jwt.secret);
+
+  // 3. Check if user still exist's
+  const currentUser = await User.findById(decoded.user._id);
+
+  if (!currentUser) {
+    return next(
+      new AppError("User belonging to this token no longer exist's", 401)
+    );
+  }
+
+  // 4. Check if user changed password after the token was issued
+  if (currentUser.changedPasswordAfter(decoded.iat)) {
+    return next(
+      new AppError('You recently changed password! please login again.', 401)
+    );
+  }
+
+  // 5. GRANT ACCESS TO PROTECTED ROUTE
+  req.user = currentUser;
+  next();
+});
+
 export default {
   signup,
   login,
+  protect,
 };
