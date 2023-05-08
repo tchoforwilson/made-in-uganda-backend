@@ -4,10 +4,9 @@ export default class AppError extends Error {
    * @param {String} message -> Error message
    * @param {Number} statusCode -> Error status code
    */
-  constructor(statusCode, message) {
+  constructor(message, statusCode) {
     super(message);
     this.statusCode = statusCode;
-    this.message = message;
     this.status = `${statusCode}`.startsWith('4') ? 'fail' : 'error';
     this.isOperational = true;
 
