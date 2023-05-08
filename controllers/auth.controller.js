@@ -171,4 +171,5 @@ export default {
   login,
   protect,
   restrictTo,
+  updatePassword,
 };
