@@ -1,6 +1,10 @@
 import nodemailer from 'nodemailer';
 import config from '../configurations/config.js';
 
+/**
+ * @breif Utility method for sending email in "development mode"
+ * @param {Object} options -> Options in email like message, to and subject
+ */
 const sendEmailDev = async (options) => {
   // 1) Create a transporter
   const transporter = nodemailer.createTransport({
