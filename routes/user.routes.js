@@ -6,9 +6,10 @@ const router = Router();
 
 router.post('/signup', authController.signup);
 router.post('/login', authController.login);
-router.post('/updateMyPassword', authController.updatePassword);
 
-// PROTECT ALL ROUTE
+// PROTECT ALL ROUTE AFTER THIS MIDDLEWARE
 router.use(authController.protect);
+
+router.patch('/updateMyPassword', authController.updatePassword);
 
 export default router;
