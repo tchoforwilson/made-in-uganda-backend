@@ -33,3 +33,28 @@ const createSendToken = (user, statusCode, res) => {
     },
   });
 };
+
+/**
+ * @breif Controller to sigup a new user
+ */
+const signup = catchAsync(async (req, res, next) => {
+  // 1. Pick required values
+  const { name, email, telephone, store, password, passwordConfirm } = req.body;
+
+  // 2. Create new user
+  const newUser = await User.create({
+    name,
+    email,
+    telephone,
+    store,
+    password,
+    passwordConfirm,
+  });
+
+  // 3. Send response
+  createSendToken(newUser, 201, req, res);
+});
+
+export default {
+  signup,
+};
