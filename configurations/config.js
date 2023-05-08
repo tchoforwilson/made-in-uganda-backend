@@ -29,6 +29,15 @@ const config = {
     expiresIn: process.env.JWT_EXPIRES_IN,
     cookieExpires: process.env.JWT_COOKIE_EXPIRES_IN,
   },
+  /**
+   * @breif Mail trap variables
+   */
+  mailTrap: {
+    name: process.env.EMAIL_USERNAME,
+    password: process.env.EMAIL_PASSWORD,
+    host: process.env.EMAIL_HOST,
+    port: process.env.EMAIL_PORT,
+  },
 };
 
 export default config;
