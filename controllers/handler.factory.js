@@ -96,9 +96,32 @@ const getAll = (Model) =>
     });
   });
 
+/**
+ * @breif Delete a single document in the database collection
+ * @param {Collection} Model -> Database collection
+ * @returns {function}
+ */
+const deleteOne = (Model) =>
+  catchAsync(async (req, res, next) => {
+    // 1. Find document and delete
+    const doc = await Model.findByIdAndDelete(req.params.id);
+
+    // 2. Check if document exist's
+    if (!doc) {
+      return next(new AppError('No document found with that ID', 404));
+    }
+
+    // 3. Send the response
+    res.status(204).json({
+      status: 'success',
+      data: null,
+    });
+  });
+
 export default {
   createOne,
   getOne,
   updateOne,
   getAll,
+  deleteOne,
 };
