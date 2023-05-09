@@ -27,6 +27,10 @@ const userSchema = new Schema({
       type: String,
       required: [true, 'Store or shop must have a name!'],
     },
+    employees: {
+      type: Number,
+      required: [true, 'Please provide number of employees'],
+    },
     location: {
       // GeoJSON
       type: {
