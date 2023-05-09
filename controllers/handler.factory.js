@@ -19,3 +19,31 @@ const createOne = (Model) =>
       },
     });
   });
+
+/**
+ * @breif Get a single document in the database collection
+ * using the parameter request id
+ * @param {Collection} Model -> Database collection
+ * @returns {function}
+ */
+const getOne = (Model) =>
+  catchAsync(async (req, res, next) => {
+    // 1. Get document
+    const doc = await Model.findById(req.params.id);
+
+    // 2. Check if document exist's
+    if (!doc) {
+      return next(new AppError('No document found with that ID', 404));
+    }
+
+    // 3. Send response
+    res.status(200).json({
+      status: 'success',
+      data: doc,
+    });
+  });
+
+export default {
+  createOne,
+  getOne,
+};
