@@ -1,5 +1,6 @@
 import User from '../models/user.model.js';
 
+import factory from './handler.factory.js';
 import AppError from '../utilities/appError.js';
 import catchAsync from '../utilities/catchAsync.js';
 
@@ -75,8 +76,26 @@ const deleteMe = catchAsync(async (req, res, next) => {
   });
 });
 
+const createMember = (req, res) => {
+  res.status(500).json({
+    status: 'error',
+    message: 'This route is not defined! Please use /signup instead',
+  });
+};
+
+const getUser = factory.getOne(User);
+const getAllUsers = factory.getAll(User);
+
+// Do NOT update passwords with this!
+const updateUser = factory.updateOne(User);
+const deleteUser = factory.deleteOne(User);
+
 export default {
   getMe,
   updateMe,
   deleteMe,
+  getUser,
+  getAllUsers,
+  updateUser,
+  deleteUser,
 };
