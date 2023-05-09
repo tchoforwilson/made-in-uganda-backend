@@ -1,6 +1,7 @@
 import { Router } from 'express';
 
 import authController from '../controllers/auth.controller.js';
+import userController from '../controllers/user.controller.js';
 
 const router = Router();
 
@@ -13,5 +14,6 @@ router.post('/resetPassword/:token', authController.resetPassword);
 router.use(authController.protect);
 
 router.patch('/updateMyPassword', authController.updatePassword);
+router.patch('/updateMe', userController.updateMe);
 
 export default router;
