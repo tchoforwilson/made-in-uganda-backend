@@ -1,6 +1,6 @@
-import { Model } from 'mongoose';
 import AppError from '../utilities/appError';
 import catchAsync from '../utilities/catchAsync';
+import APIFeatures from '../utilities/apiFeatures';
 
 /**
  * @breif Create a new document in a database collection
@@ -65,8 +65,40 @@ const updateOne = (Model) =>
     });
   });
 
+/**
+ * @breif Retrieve all document from a collection, documents are filtered, sorted,
+ * limited and paginated
+ * @param {Collection} Model -> Database collection
+ * @returns {function}
+ */
+const getAll = (Model) =>
+  catchAsync(async (req, res, next) => {
+    // 1. To allow for nested GET product & subcription o
+    let filter = {};
+    if (req.params.storeId) filter = { store: req.params.storeId };
+
+    // 2. EXECUTE THE QUERY
+    const features = new APIFeatures(Model.find(filter), req.query)
+      .filter()
+      .sort()
+      .limitFields()
+      .paginate();
+
+    const docs = await features.query;
+
+    // 3. SEND RESPONSE
+    res.status(200).json({
+      status: 'success',
+      results: docs.length,
+      data: {
+        data: docs,
+      },
+    });
+  });
+
 export default {
   createOne,
   getOne,
   updateOne,
+  getAll,
 };
