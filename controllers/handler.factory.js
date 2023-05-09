@@ -1,3 +1,4 @@
+import { Model } from 'mongoose';
 import AppError from '../utilities/appError';
 import catchAsync from '../utilities/catchAsync';
 
@@ -43,7 +44,29 @@ const getOne = (Model) =>
     });
   });
 
+/**
+ * @breif Update a single a documnent in the collection, from the
+ * request paramter id
+ * @param {Collection} Model -> Database collection
+ * @returns {function}
+ */
+const updateOne = (Model) =>
+  catchAsync(async (req, res, next) => {
+    const doc = await Model.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (!doc) return next(new AppError('No document found with that ID!', 404));
+
+    res.status(200).json({
+      status: 'success',
+      data: doc,
+    });
+  });
+
 export default {
   createOne,
   getOne,
+  updateOne,
 };
