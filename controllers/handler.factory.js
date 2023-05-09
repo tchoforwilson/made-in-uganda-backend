@@ -1,6 +1,6 @@
-import AppError from '../utilities/appError';
-import catchAsync from '../utilities/catchAsync';
-import APIFeatures from '../utilities/apiFeatures';
+import AppError from '../utilities/appError.js';
+import catchAsync from '../utilities/catchAsync.js';
+import APIFeatures from '../utilities/apiFeatures.js';
 
 /**
  * @breif Create a new document in a database collection
