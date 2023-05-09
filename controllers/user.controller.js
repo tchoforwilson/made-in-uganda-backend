@@ -59,7 +59,24 @@ const updateMe = catchAsync(async (req, res, next) => {
   });
 });
 
+/**
+ * @breif Controller for deleting user profile, by setting active status to false.
+ */
+const deleteMe = catchAsync(async (req, res, next) => {
+  // 1. Find user and update active to false
+  await User.findByIdAndUpdate(req.user.id, {
+    active: false,
+  });
+
+  // 2. Send response
+  res.status(204).json({
+    status: 'success',
+    data: null,
+  });
+});
+
 export default {
   getMe,
   updateMe,
+  deleteMe,
 };
