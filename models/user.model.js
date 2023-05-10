@@ -8,11 +8,11 @@ import config from '../configurations/config.js';
 const userSchema = new Schema({
   name: {
     type: String,
-    required: [true, 'Please tell us your name'],
+    required: [true, 'Please tell us your store name'],
   },
   email: {
     type: String,
-    required: [true, 'Please provide your email'],
+    required: [true, 'Please provide your store email'],
     unique: [true, 'This account already exist'],
     lowercase: true,
     trim: true,
@@ -22,35 +22,30 @@ const userSchema = new Schema({
     type: String,
     validate: [validator.isMobilePhone],
   },
-  store: {
-    name: {
+  photo: String,
+  employees: {
+    type: Number,
+    required: [true, 'Please provide number of employees'],
+  },
+  location: {
+    // GeoJSON
+    type: {
       type: String,
-      required: [true, 'Store or shop must have a name!'],
+      default: 'Point',
+      enum: ['Point'],
     },
-    employees: {
-      type: Number,
-      required: [true, 'Please provide number of employees'],
-    },
-    location: {
-      // GeoJSON
-      type: {
+    coordinates: [Number],
+    address: {
+      city: {
         type: String,
-        default: 'Point',
-        enum: ['Point'],
+        required: [true, 'Please provide store or shop city'],
       },
-      coordinates: [Number],
-      address: {
-        city: {
-          type: String,
-          required: [true, 'Please provide store or shop city'],
-        },
-        address_line: {
-          type: String,
-          required: [true, 'Please provide store or shop address line'],
-        },
+      address_line: {
+        type: String,
+        required: [true, 'Please provide store or shop address line'],
       },
-      description: String,
     },
+    description: String,
   },
   role: {
     type: String,
