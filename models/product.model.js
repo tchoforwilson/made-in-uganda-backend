@@ -12,7 +12,7 @@ const productSchema = new Schema(
       required: [true, 'Please provide product price!'],
     },
     weight: Number,
-    photo: {
+    image: {
       type: String,
       required: [true, 'Please provide product photo'],
     },
