@@ -1,8 +1,33 @@
+import sharp from 'sharp';
 import User from '../models/user.model.js';
 
 import factory from './handler.factory.js';
 import AppError from '../utilities/appError.js';
 import catchAsync from '../utilities/catchAsync.js';
+import upload from '../utilities/upload.js';
+
+/**
+ * @breif Upload a single store photo
+ */
+const uploadStorePhoto = upload.single('photo');
+
+/**
+ * @breif Resize store photo to size 500x500 and convert format to jpeg
+ * then store photo in folder public/images/stores
+ */
+const resizeStorePhoto = catchAsync(async (req, res, next) => {
+  if (!req.file) return next();
+
+  req.file.filename = `user-${req.user.id}-${Date.now()}.jpeg`;
+
+  await sharp(req.file.buffer)
+    .resize(500, 500)
+    .toFormat('jpeg')
+    .jpeg({ quality: 90 })
+    .toFile(`public/images/stores/${req.file.filename}`);
+
+  next();
+});
 
 /**
  * @breif Filter out unwanted fields in an object
@@ -91,6 +116,8 @@ const updateUser = factory.updateOne(User);
 const deleteUser = factory.deleteOne(User);
 
 export default {
+  uploadStorePhoto,
+  resizeStorePhoto,
   getMe,
   updateMe,
   deleteMe,
