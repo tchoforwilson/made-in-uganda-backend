@@ -15,7 +15,12 @@ router.use(authController.protect);
 
 router.patch('/updateMyPassword', authController.updatePassword);
 router.get('/me', userController.getMe, userController.getUser);
-router.patch('/updateMe', userController.updateMe);
+router.patch(
+  '/updateMe',
+  userController.uploadStorePhoto,
+  userController.resizeStorePhoto,
+  userController.updateMe
+);
 router.patch('/deleteMe', userController.deleteMe);
 
 // Restrict all route after this to admin
