@@ -68,8 +68,10 @@ const updateMe = catchAsync(async (req, res, next) => {
     'name',
     'email',
     'telephone',
-    'store'
+    'employees',
+    'location'
   );
+  if (req.file) filteredBody.photo = req.file.filename; // add photo file
 
   // 3) Update user document
   const updatedUser = await User.findByIdAndUpdate(req.user.id, filteredBody, {
