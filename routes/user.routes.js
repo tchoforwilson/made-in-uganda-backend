@@ -21,4 +21,15 @@ router.patch('/deleteMe', userController.deleteMe);
 // Restrict all route after this to admin
 router.use(authController.restrictTo('admin'));
 
+router
+  .route('/')
+  .get(userController.getAllUsers)
+  .post(userController.createUser);
+
+router
+  .route('/:id')
+  .get(userController.getUser)
+  .patch(userController.updateUser)
+  .delete(userController.deleteUser);
+
 export default router;
