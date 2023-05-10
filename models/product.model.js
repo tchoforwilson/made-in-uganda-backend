@@ -50,11 +50,13 @@ productSchema.pre('save', function (next) {
 /**
  * @breif Populate product with store when find
  */
-productSchema.pre('/^find/', function (next) {
+productSchema.pre(/^find/, function (next) {
   this.populate({
     path: 'store',
     select: '-__v',
   });
+
+  next();
 });
 
 const Product = model('Product', productSchema);
