@@ -14,7 +14,11 @@ router.post('/resetPassword/:token', authController.resetPassword);
 router.use(authController.protect);
 
 router.patch('/updateMyPassword', authController.updatePassword);
+router.get('/me', userController.getMe, userController.getUser);
 router.patch('/updateMe', userController.updateMe);
 router.patch('/deleteMe', userController.deleteMe);
+
+// Restrict all route after this to admin
+router.use(authController.restrictTo('admin'));
 
 export default router;
