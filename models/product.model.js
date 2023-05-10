@@ -11,6 +11,7 @@ const productSchema = new Schema(
       type: Number,
       required: [true, 'Please provide product price!'],
     },
+    actualPrice: Number,
     weight: Number,
     image: {
       type: String,
@@ -24,7 +25,10 @@ const productSchema = new Schema(
         message: 'Product must belong to a category',
       },
     },
-    discount: Number,
+    discount: {
+      type: Number,
+      default: 0,
+    },
     store: {
       type: Schema.ObjectId,
       ref: 'User',
@@ -37,6 +41,11 @@ const productSchema = new Schema(
     },
   }
 );
+
+productSchema.pre('save', function (next) {
+  this.actualPrice = this.price * ((100 - this.discount) / 100);
+  next();
+});
 
 /**
  * @breif Populate product with store when find
