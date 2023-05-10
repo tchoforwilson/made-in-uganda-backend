@@ -1,5 +1,5 @@
 import { model, Schema } from 'mongoose';
-import categories from '../configurations/category.js';
+import { categories } from '../configurations/enums.js';
 
 const productSchema = new Schema(
   {
