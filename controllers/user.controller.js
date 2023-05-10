@@ -110,6 +110,13 @@ const createMember = (req, res) => {
   });
 };
 
+const createUser = (req, res) => {
+  res.status(500).json({
+    status: 'error',
+    message: 'This route is not defined! Please use /signup instead',
+  });
+};
+
 const getUser = factory.getOne(User);
 const getAllUsers = factory.getAll(User);
 
@@ -123,6 +130,7 @@ export default {
   getMe,
   updateMe,
   deleteMe,
+  createUser,
   getUser,
   getAllUsers,
   updateUser,
