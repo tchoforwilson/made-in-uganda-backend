@@ -5,6 +5,7 @@ import factory from './handler.factory.js';
 import AppError from '../utilities/appError.js';
 import catchAsync from '../utilities/catchAsync.js';
 import upload from '../utilities/upload.js';
+import { filterObj } from '../utilities/util.js';
 
 /**
  * @breif Upload a single store photo
@@ -28,20 +29,6 @@ const resizeStorePhoto = catchAsync(async (req, res, next) => {
 
   next();
 });
-
-/**
- * @breif Filter out unwanted fields in an object
- * @param {Object} obj -> Provided object
- * @param  {...any} allowedFields -> Fields allowed to be updated
- * @returns {Object}
- */
-const filterObj = (obj, ...allowedFields) => {
-  const newObj = {};
-  Object.keys(obj).forEach((el) => {
-    if (allowedFields.includes(el)) newObj[el] = obj[el];
-  });
-  return newObj;
-};
 
 const getMe = (req, res, next) => {
   req.params.id = req.user.id;
