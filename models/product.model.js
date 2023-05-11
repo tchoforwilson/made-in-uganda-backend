@@ -13,7 +13,7 @@ const productSchema = new Schema(
     },
     actualPrice: Number,
     weight: Number,
-    image: {
+    imageCover: {
       type: String,
       required: [true, 'Please provide product photo'],
     },
