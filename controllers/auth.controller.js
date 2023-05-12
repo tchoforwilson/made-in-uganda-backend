@@ -92,7 +92,7 @@ const login = catchAsync(async (req, res, next) => {
   }
 
   // 5. If everything ok, send token to client
-  createSendToken(user, 200, req, res);
+  createSendToken(user, 200, res);
 });
 
 const protect = catchAsync(async (req, res, next) => {
