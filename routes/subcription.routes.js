@@ -10,7 +10,10 @@ router.use(authController.restrictTo('admin'));
 
 router
   .route('/')
-  .post(subcriptionController.createSubscription)
+  .post(
+    subcriptionController.setSubcriptionStoreId,
+    subcriptionController.createSubscription
+  )
   .get(subcriptionController.getAllSubcriptions);
 
 router
