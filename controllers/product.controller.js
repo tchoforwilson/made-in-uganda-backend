@@ -4,39 +4,79 @@ import Product from '../models/product.model.js';
 import factory from './handler.factory.js';
 import upload from '../utilities/upload.js';
 import catchAsync from '../utilities/catchAsync.js';
-import AppError from '../utilities/appError.js';
 
 /**
- * @breif Middleware to upload a single product image
+ * @breif Set product store id
+ * @param {Request} req -> Request Object
+ * @param {Response} res -> Response Object
+ * @param {Function} next -> Next function
  */
-const uploadProductImage = upload.single('image');
+const setProductStoreId = (req, res, next) => {
+  // Allow for nested routes
+  if (!req.body.store) req.body.store = req.user.id || req.params.storeId;
+  next();
+};
 
 /**
- * @breif Resize product image to size 700x700 and convert format to jpeg
+ * @breif Middleware to upload a product imageCover and images
+ */
+const uploadProductImages = upload.fields([
+  { name: 'imageCover', maxCount: 1 },
+  { name: 'images', maxCount: 3 },
+]);
+
+/**
+ * @breif Resize product images to size 2000x1333 and convert format to jpeg
  * then product image in folder public/images/products
  */
-const resizeProductImage = catchAsync(async (req, res, next) => {
-  if (!req.file) return next();
+const resizeProductImages = catchAsync(async (req, res, next) => {
+  if (!req.files) return next();
 
-  req.file.filename = `product-${req.user.id}-${Date.now()}.jpeg`;
+  // 1) Cover image
+  if (req.files.imageCover) {
+    req.body.imageCover = `product-${req.user.id}-${Date.now()}-cover.jpeg`;
+    await sharp(req.files.imageCover[0].buffer)
+      .resize(2000, 1333)
+      .toFormat('jpeg')
+      .jpeg({ quality: 90 })
+      .toFile(`public/images/products/${req.body.imageCover}`);
+  }
 
-  await sharp(req.file.buffer)
-    .resize(700, 700)
-    .toFormat('jpeg')
-    .jpeg({ quality: 90 })
-    .toFile(`public/images/products/${req.file.filename}`);
+  // 2) Images
+  if (req.files.images && req.files.images.length > 0) {
+    req.body.images = [];
+
+    await Promise.all(
+      req.files.images.map(async (file, i) => {
+        const filename = `product-${req.user.id}-${Date.now()}-${i + 1}.jpeg`;
+
+        await sharp(file.buffer)
+          .resize(2000, 1333)
+          .toFormat('jpeg')
+          .jpeg({ quality: 90 })
+          .toFile(`public/images/products/${filename}`);
+
+        req.body.images.push(filename);
+      })
+    );
+  }
 
   next();
 });
 
+const createProduct = factory.createOne(Product);
+const updateProduct = factory.updateOne(Product);
 const getProduct = factory.getOne(Product);
-const getAllProduct = factory.getAll(Product);
+const getAllProducts = factory.getAll(Product);
 const deleteProduct = factory.deleteOne(Product);
 
 export default {
-  uploadProductImage,
-  resizeProductImage,
+  setProductStoreId,
+  uploadProductImages,
+  resizeProductImages,
+  createProduct,
+  updateProduct,
   getProduct,
-  getAllProduct,
+  getAllProducts,
   deleteProduct,
 };
