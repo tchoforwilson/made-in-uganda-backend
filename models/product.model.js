@@ -5,34 +5,54 @@ const productSchema = new Schema(
   {
     name: {
       type: String,
-      required: [true, 'Please provide product name!'],
+      required: [true, 'A product must have a name!'],
+      trim: true,
+      maxlength: [
+        40,
+        'A product name must have less or equal then 40 characters',
+      ],
+      minlength: [
+        5,
+        'A product name must have more or equal then 10 characters',
+      ],
     },
     price: {
       type: Number,
-      required: [true, 'Please provide product price!'],
+      required: [true, 'A product must have a price!'],
     },
-    actualPrice: Number,
+    priceDiscount: {
+      type: Number,
+      validate: {
+        validator: function (val) {
+          // this only points to current doc on NEW document creation
+          return val < this.price;
+        },
+        message: 'Discount price ({VALUE}) should be below regular price',
+      },
+    },
+    percentageDiscount: Number,
     weight: Number,
     imageCover: {
       type: String,
-      required: [true, 'Please provide product photo'],
+      required: [true, 'A product must have a cover photo'],
     },
     images: [String],
-    description: String,
+    description: {
+      type: String,
+      trim: true,
+    },
     category: {
       type: String,
+      required: [true, 'A product must have a category'],
       enum: {
         values: [...categories],
         message: 'Product must belong to a category',
       },
     },
-    discount: {
-      type: Number,
-      default: 0,
-    },
     store: {
       type: Schema.ObjectId,
       ref: 'User',
+      required: [true, 'A product must belong to a store'],
     },
   },
   {
@@ -42,9 +62,11 @@ const productSchema = new Schema(
     },
   }
 );
-
+/**
+ * @breif Middleware to calculate percentage discount before save
+ */
 productSchema.pre('save', function (next) {
-  this.actualPrice = this.price * ((100 - this.discount) / 100);
+  this.percentageDiscount = 100 - (this.priceDiscount * 100) / this.price;
   next();
 });
 
@@ -54,7 +76,7 @@ productSchema.pre('save', function (next) {
 productSchema.pre(/^find/, function (next) {
   this.populate({
     path: 'store',
-    select: '-__v',
+    select: '-__v -passwordChangedAt',
   });
 
   next();
