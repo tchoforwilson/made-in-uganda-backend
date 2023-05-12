@@ -9,6 +9,7 @@ export const currency = ['DOLLAR', 'EUR'];
 export const categories = [
   'Electronics',
   'Breads Sweets',
+  'Vegetables',
   'Frozen Seafood',
   'Wines & Alcoholic Drinks',
   'Coffees and Teas',
