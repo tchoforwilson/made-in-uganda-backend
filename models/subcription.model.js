@@ -4,7 +4,7 @@ const subcriptionSchema = new Schema({
   store: {
     type: Schema.ObjectId,
     ref: 'User',
-    required: [trur, 'subcription must belong to a store!'],
+    required: [true, 'subcription must belong to a store!'],
   },
   price: {
     type: Number,

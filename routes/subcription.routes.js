@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import authController from '../controllers/auth.controller';
-import subcriptionController from '../controllers/subcription.controller';
+import authController from '../controllers/auth.controller.js';
+import subcriptionController from '../controllers/subcription.controller.js';
 
 const router = Router({ mergeParams: true });
 
