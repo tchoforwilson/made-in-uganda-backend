@@ -16,8 +16,18 @@ const productSchema = new Schema(
       ],
     },
     price: {
-      type: Number,
-      required: [true, 'A product must have a price!'],
+      value: {
+        type: Number,
+        required: [true, 'A product must have a price!'],
+      },
+      currency: {
+        type: String,
+        enum: {
+          values: ['UGX', 'USD', 'EURO'],
+          message: 'Currency is either UGX, USD or EURO',
+        },
+        default: 'UGX',
+      },
     },
     priceDiscount: {
       type: Number,
