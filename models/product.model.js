@@ -34,7 +34,7 @@ const productSchema = new Schema(
       validate: {
         validator: function (val) {
           // this only points to current doc on NEW document creation
-          return val < this.price;
+          return val < this.price.value;
         },
         message: 'Discount price ({VALUE}) should be below regular price',
       },
