@@ -1,5 +1,4 @@
 import { model, Schema } from 'mongoose';
-import { categories } from '../configurations/enums.js';
 
 const productSchema = new Schema(
   {
@@ -42,12 +41,9 @@ const productSchema = new Schema(
       trim: true,
     },
     category: {
-      type: String,
-      required: [true, 'A product must have a category'],
-      enum: {
-        values: [...categories],
-        message: 'Product must belong to a category',
-      },
+      type: Schema.ObjectId,
+      ref: 'Category',
+      required: [true, 'A product must belong to a category'],
     },
     store: {
       type: Schema.ObjectId,
@@ -74,6 +70,12 @@ productSchema.pre('save', function (next) {
  * @breif Populate product with store when find
  */
 productSchema.pre(/^find/, function (next) {
+  // Populate with category
+  this.populate({
+    path: 'category',
+    select: '+name',
+  });
+  // Populate with store
   this.populate({
     path: 'store',
     select: '-__v -passwordChangedAt',
