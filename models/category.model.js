@@ -5,7 +5,7 @@ const categorySchema = new Schema(
     name: {
       type: String,
       required: [true, 'A category must have a name!'],
-      uppercase: true,
+      lowercase: true,
       unique: true,
     },
   },
