@@ -14,7 +14,7 @@ router
 router
   .route('/:id')
   .get(categoryController.updateCategory)
-  .patch(categoryController.getCategory)
+  .patch(categoryController.updateCategory)
   .delete(categoryController.deleteCategory);
 
 export default router;
