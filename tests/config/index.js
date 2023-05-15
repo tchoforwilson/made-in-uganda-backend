@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 import User from '../../models/user.model.js';
 import server from '../../server.js';
 import config from '../../configurations/config.js';
+import UnitTest from '../utilities/unitTestBases.js';
 
 /// @breif API request services
 export const api = request(server);
@@ -17,13 +18,23 @@ const signToken = (user) => {
   });
 };
 
+const user = UnitTest.GenRandomValidUserWithPassword();
+
+/**
+ * @breif method to create a simple user
+ */
 export const createUser = async () => {
-  return await User.create({
-    name: 'Mary James',
-    email: 'mary@gmail.com',
-    password: 'pass1234',
-    passwordConfirm: 'pass1234',
-  });
+  // TODO: Find out why the generated user role is admin
+  user.role = 'user';
+  return await User.create(user);
+};
+
+/**
+ * @breif method to create admin user
+ */
+export const createAdminUser = async () => {
+  user.role = 'admin';
+  return await User.create(user);
 };
 
 /**
