@@ -4,8 +4,6 @@ import categoryController from '../controllers/category.controller.js';
 
 const router = Router();
 
-router.use();
-
 router
   .route('/')
   .post(
