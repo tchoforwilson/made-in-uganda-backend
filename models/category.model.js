@@ -8,6 +8,7 @@ const categorySchema = new Schema(
       lowercase: true,
       unique: true,
     },
+    description: String,
   },
   {
     timestamps: {
