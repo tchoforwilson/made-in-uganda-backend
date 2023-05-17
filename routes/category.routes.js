@@ -4,17 +4,29 @@ import categoryController from '../controllers/category.controller.js';
 
 const router = Router();
 
-router.use(authController.protect, authController.restrictTo('admin'));
+router.use();
 
 router
   .route('/')
-  .post(categoryController.createCategory)
+  .post(
+    authController.protect,
+    authController.restrictTo('admin'),
+    categoryController.createCategory
+  )
   .get(categoryController.getAllCategories);
 
 router
   .route('/:id')
   .get(categoryController.updateCategory)
-  .patch(categoryController.updateCategory)
-  .delete(categoryController.deleteCategory);
+  .patch(
+    authController.protect,
+    authController.restrictTo('admin'),
+    categoryController.updateCategory
+  )
+  .delete(
+    authController.protect,
+    authController.restrictTo('admin'),
+    categoryController.deleteCategory
+  );
 
 export default router;
