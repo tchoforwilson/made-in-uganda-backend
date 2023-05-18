@@ -20,6 +20,7 @@ class UnitTest {
   GenRandomValidUser() {
     const user = {
       name: GenRandomVal.GenRandomValidString(smallMaxLength),
+      shop: GenRandomVal.GenRandomValidText(30),
       telephone: GenRandomVal.GenRandomValidTelephone(),
       email: GenRandomVal.GenRandomValidEmail(),
       employees: GenRandomVal.GenRandomInteger(smallMaxLength),
