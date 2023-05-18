@@ -10,6 +10,10 @@ const userSchema = new Schema({
     type: String,
     required: [true, 'Please tell us your store name'],
   },
+  shop: {
+    type: String,
+    required: [true, 'Please provide shope name'],
+  },
   email: {
     type: String,
     required: [true, 'Please provide your store email'],

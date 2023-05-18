@@ -53,6 +53,7 @@ const updateMe = catchAsync(async (req, res, next) => {
   const filteredBody = filterObj(
     req.body,
     'name',
+    'shop',
     'email',
     'telephone',
     'employees',
