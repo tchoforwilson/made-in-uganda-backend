@@ -12,7 +12,7 @@ const userSchema = new Schema({
   },
   shop: {
     type: String,
-    required: [true, 'Please provide shope name'],
+    required: [true, 'Please provide shop name'],
   },
   email: {
     type: String,

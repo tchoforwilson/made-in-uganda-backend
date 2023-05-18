@@ -48,6 +48,7 @@ const signup = catchAsync(async (req, res, next) => {
   // 1. Pick required values
   const {
     name,
+    shop,
     email,
     telephone,
     employees,
@@ -59,6 +60,7 @@ const signup = catchAsync(async (req, res, next) => {
   // 2. Create new user
   const newUser = await User.create({
     name,
+    shop,
     email,
     telephone,
     employees,
