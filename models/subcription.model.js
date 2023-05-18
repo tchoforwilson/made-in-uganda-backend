@@ -4,11 +4,11 @@ const subcriptionSchema = new Schema({
   store: {
     type: Schema.ObjectId,
     ref: 'User',
-    required: [true, 'subcription must belong to a store!'],
+    required: [true, 'Subcription must belong to a store!'],
   },
-  price: {
+  amount: {
     type: Number,
-    required: [true, 'Booking must have a price.'],
+    required: [true, 'Please provide subcription amount!'],
   },
   paid: {
     type: Boolean,
