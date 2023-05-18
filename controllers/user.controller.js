@@ -90,13 +90,6 @@ const deleteMe = catchAsync(async (req, res, next) => {
   });
 });
 
-const createMember = (req, res) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'This route is not defined! Please use /signup instead',
-  });
-};
-
 const createUser = (req, res) => {
   res.status(500).json({
     status: 'error',
