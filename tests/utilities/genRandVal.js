@@ -85,6 +85,18 @@ class RandomVal {
   }
 
   /**
+   * @breif Generate a random valid zip code
+   * @param {Number} len Lenght of zip code
+   * @returns {Number}
+   */
+  GenRandomValidZipCode(len) {
+    return randomstring.generate({
+      length: len,
+      charset: 'numeric',
+    });
+  }
+
+  /**
    * @breif Generate and random valid date string
    * @returns {String}
    */
