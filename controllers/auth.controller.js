@@ -52,7 +52,7 @@ const signup = catchAsync(async (req, res, next) => {
     email,
     telephone,
     employees,
-    location,
+    address,
     password,
     passwordConfirm,
   } = req.body;
@@ -64,7 +64,7 @@ const signup = catchAsync(async (req, res, next) => {
     email,
     telephone,
     employees,
-    location,
+    address,
     password,
     passwordConfirm,
   });

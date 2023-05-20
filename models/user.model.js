@@ -31,6 +31,25 @@ const userSchema = new Schema({
     type: Number,
     required: [true, 'Please provide number of employees'],
   },
+  address: {
+    line_1: {
+      type: String,
+      required: [true, 'Please provide address line'],
+    },
+    line_2: String,
+    city: {
+      type: String,
+      required: [true, 'Please tell us the city'],
+    },
+    region: {
+      type: String,
+      required: [true, 'Provide the state/province/region'],
+    },
+    zipcode: {
+      type: String,
+      required: [true, 'Provide zipcode'],
+    },
+  },
   location: {
     // GeoJSON
     type: {
@@ -39,17 +58,6 @@ const userSchema = new Schema({
       enum: ['Point'],
     },
     coordinates: [Number],
-    address: {
-      city: {
-        type: String,
-        required: [true, 'Please provide store or shop city'],
-      },
-      address_line: {
-        type: String,
-        required: [true, 'Please provide store or shop address line'],
-      },
-    },
-    description: String,
   },
   role: {
     type: String,
