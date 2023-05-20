@@ -20,16 +20,16 @@ class UnitTest {
   GenRandomValidUser() {
     const user = {
       name: GenRandomVal.GenRandomValidString(smallMaxLength),
-      shop: GenRandomVal.GenRandomValidText(30),
+      shop: GenRandomVal.GenRandomValidString(smallMaxLength),
       telephone: GenRandomVal.GenRandomValidTelephone(),
       email: GenRandomVal.GenRandomValidEmail(),
       employees: GenRandomVal.GenRandomInteger(smallMaxLength),
-      location: {
-        address: {
-          city: GenRandomVal.GenRandomValidString(smallMaxLength),
-          address_line: GenRandomVal.GenRandomValidString(smallMaxLength),
-        },
-        description: GenRandomVal.GenRandomValidText(30),
+      address: {
+        line_1: GenRandomVal.GenRandomValidString(smallMaxLength),
+        line_2: GenRandomVal.GenRandomValidString(smallMaxLength),
+        city: GenRandomVal.GenRandomValidString(smallMaxLength),
+        region: GenRandomVal.GenRandomValidString(smallMaxLength),
+        zipcode: GenRandomVal.GenRandomValidZipCode(smallMinLength),
       },
     };
     return user;
