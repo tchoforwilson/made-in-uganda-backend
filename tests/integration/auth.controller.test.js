@@ -32,7 +32,7 @@ describe('AuthController_Tests', () => {
     it('Test_Signup It should return 201 if the user is registered', async () => {
       // 1. Generate user with password
       const genUser = UnitTestBases.GenRandomValidUserWithPassword();
-      console.log(genUser);
+
       // 2. Send Request
       const res = await api.post(`${URL}/signup`).send(genUser);
 
