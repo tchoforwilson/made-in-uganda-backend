@@ -12,11 +12,11 @@ const userSchema = new Schema({
   },
   email: {
     type: String,
-    required: [true, 'Please provide your store email'],
-    unique: [true, 'This account already exist'],
+    required: [true, 'Please provide your email'],
+    unique: true,
     lowercase: true,
     trim: true,
-    validate: [validator.isEmail, 'Please provide a valid email!'],
+    validate: [validator.isEmail, 'Please provide a valid email'],
   },
   role: {
     type: String,
