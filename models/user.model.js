@@ -6,13 +6,9 @@ import validator from 'validator';
 import config from '../configurations/config.js';
 
 const userSchema = new Schema({
-  name: {
+  username: {
     type: String,
-    required: [true, 'Please tell us your store name'],
-  },
-  shop: {
-    type: String,
-    required: [true, 'Please provide shop name'],
+    required: [true, 'Please tell us your user name'],
   },
   email: {
     type: String,
@@ -21,43 +17,6 @@ const userSchema = new Schema({
     lowercase: true,
     trim: true,
     validate: [validator.isEmail, 'Please provide a valid email!'],
-  },
-  telephone: {
-    type: String,
-    validate: [validator.isMobilePhone],
-  },
-  photo: String,
-  employees: {
-    type: Number,
-    required: [true, 'Please provide number of employees'],
-  },
-  address: {
-    line_1: {
-      type: String,
-      required: [true, 'Please provide address line'],
-    },
-    line_2: String,
-    city: {
-      type: String,
-      required: [true, 'Please tell us the city'],
-    },
-    region: {
-      type: String,
-      required: [true, 'Provide the state/province/region'],
-    },
-    zipcode: {
-      type: String,
-      required: [true, 'Provide zipcode'],
-    },
-  },
-  location: {
-    // GeoJSON
-    type: {
-      type: String,
-      default: 'Point',
-      enum: ['Point'],
-    },
-    coordinates: [Number],
   },
   role: {
     type: String,
