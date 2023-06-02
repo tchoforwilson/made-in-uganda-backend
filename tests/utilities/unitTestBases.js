@@ -82,7 +82,7 @@ class UnitTest {
    */
   GenRandomValidStores(userIds = []) {
     const stores = [];
-    for (let i = 0; i < userIds; i++) {
+    for (let i = 0; i < userIds.length; i++) {
       stores.push(this.GenRandomValidStore(userIds[i]));
     }
     return stores;
