@@ -1,8 +1,13 @@
 import { Router } from 'express';
 import authController from '../controllers/auth.controller.js';
 import categoryController from '../controllers/category.controller.js';
+import productRouter from './product.routes.js';
 
 const router = Router();
+
+// POST /category/234fad4/products
+// GET /category/234fad4/products
+router.use('/:categoryId/products', productRouter);
 
 router
   .route('/')
@@ -15,7 +20,7 @@ router
 
 router
   .route('/:id')
-  .get(categoryController.updateCategory)
+  .get(categoryController.getCategory)
   .patch(
     authController.protect,
     authController.restrictTo('admin'),
