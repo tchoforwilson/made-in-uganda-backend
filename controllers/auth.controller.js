@@ -28,10 +28,19 @@ const createSendToken = (user, statusCode, res) => {
   // 1. Get token
   const token = signToken(user);
 
-  // 2. Remove user password from output
+  // 2. Set cookie token
+  res.cookie('jwt', token, {
+    expires: new Date(
+      Date.now() + config.jwt.cookieExpires * 24 * 60 * 60 * 1000
+    ),
+    httpOnly: true,
+    secure: req.secure || req.headers['x-forwarded-proto'] === 'https',
+  });
+
+  // 3. Remove user password from output
   user.password = undefined;
 
-  // 3. Send response
+  // 4. Send response
   res.status(statusCode).json({
     status: 'success',
     token,
@@ -46,25 +55,12 @@ const createSendToken = (user, statusCode, res) => {
  */
 const signup = catchAsync(async (req, res, next) => {
   // 1. Pick required values
-  const {
-    name,
-    shop,
-    email,
-    telephone,
-    employees,
-    address,
-    password,
-    passwordConfirm,
-  } = req.body;
+  const { username, email, password, passwordConfirm } = req.body;
 
   // 2. Create new user
   const newUser = await User.create({
-    name,
-    shop,
+    username,
     email,
-    telephone,
-    employees,
-    address,
     password,
     passwordConfirm,
   });
@@ -105,6 +101,8 @@ const protect = catchAsync(async (req, res, next) => {
     req.headers.authorization.startsWith('Bearer')
   ) {
     token = req.headers.authorization.split(' ')[1];
+  } else if (req.cookies.jwt) {
+    token = req.cookies.jwt;
   }
 
   if (!token) {
