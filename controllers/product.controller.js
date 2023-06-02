@@ -6,18 +6,6 @@ import upload from '../utilities/upload.js';
 import catchAsync from '../utilities/catchAsync.js';
 
 /**
- * @breif Set product store id
- * @param {Request} req -> Request Object
- * @param {Response} res -> Response Object
- * @param {Function} next -> Next function
- */
-const setProductStoreId = (req, res, next) => {
-  // Allow for nested routes
-  if (!req.body.store) req.body.store = req.user.id || req.params.storeId;
-  next();
-};
-
-/**
  * @breif Middleware to upload a product imageCover and images
  */
 const uploadProductImages = upload.fields([
@@ -26,7 +14,7 @@ const uploadProductImages = upload.fields([
 ]);
 
 /**
- * @breif Resize product images to size 2000x1333 and convert format to jpeg
+ * @breif Resize product images to size 640x640 and convert format to jpeg
  * then product image in folder public/images/products
  */
 const resizeProductImages = catchAsync(async (req, res, next) => {
@@ -34,9 +22,9 @@ const resizeProductImages = catchAsync(async (req, res, next) => {
 
   // 1) Cover image
   if (req.files.imageCover) {
-    req.body.imageCover = `product-${req.user.id}-${Date.now()}-cover.jpeg`;
+    req.body.imageCover = `product-${req.params.id}-${Date.now()}-cover.jpeg`;
     await sharp(req.files.imageCover[0].buffer)
-      .resize(2000, 1333)
+      .resize(640, 640, { fit: sharp.fit.cover })
       .toFormat('jpeg')
       .jpeg({ quality: 90 })
       .toFile(`public/images/products/${req.body.imageCover}`);
@@ -48,10 +36,10 @@ const resizeProductImages = catchAsync(async (req, res, next) => {
 
     await Promise.all(
       req.files.images.map(async (file, i) => {
-        const filename = `product-${req.user.id}-${Date.now()}-${i + 1}.jpeg`;
+        const filename = `product-${req.params.id}-${Date.now()}-${i + 1}.jpeg`;
 
         await sharp(file.buffer)
-          .resize(2000, 1333)
+          .resize(640, 640, { fit: sharp.fit.cover })
           .toFormat('jpeg')
           .jpeg({ quality: 90 })
           .toFile(`public/images/products/${filename}`);
@@ -64,19 +52,12 @@ const resizeProductImages = catchAsync(async (req, res, next) => {
   next();
 });
 
-const createProduct = factory.createOne(Product);
-const updateProduct = factory.updateOne(Product);
-const getProduct = factory.getOne(Product);
-const getAllProducts = factory.getAll(Product);
-const deleteProduct = factory.deleteOne(Product);
-
 export default {
-  setProductStoreId,
   uploadProductImages,
   resizeProductImages,
-  createProduct,
-  updateProduct,
-  getProduct,
-  getAllProducts,
-  deleteProduct,
+  createProduct: factory.createOne(Product),
+  updateProduct: factory.updateOne(Product),
+  getProduct: factory.getOne(Product),
+  getAllProducts: factory.getAll(Product),
+  deleteProduct: factory.deleteOne(Product),
 };
