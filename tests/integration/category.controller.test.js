@@ -185,7 +185,7 @@ describe('CategoryControllers_Tests', () => {
    * ***********************************************************
    */
   describe(`DELETE ${URL}`, () => {
-    it('Test_DeleteProduct It should return 404 for category not found', async () => {
+    it('Test_DeleteCategory It should return 404 for category not found', async () => {
       // 1. Generate random valid mongo id
       const id = GenRandomVal.GenRandomValidID();
 
@@ -195,7 +195,7 @@ describe('CategoryControllers_Tests', () => {
       // 3. Expect result
       expect(res.status).toBe(404);
     });
-    it('Test_DeleteProduct It should return 204 for category successfull deleted', async () => {
+    it('Test_DeleteCategory It should return 204 for category successfull deleted', async () => {
       // 1. Generate random valid category
       const genCategory = UnitTestBases.GenRandomValidCategory();
 
