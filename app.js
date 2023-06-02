@@ -13,6 +13,7 @@ import config from './configurations/config.js';
 import globalErrorHandler from './controllers/error.controller.js';
 import AppError from './utilities/appError.js';
 import userRouter from './routes/user.routes.js';
+import storeRouter from './routes/store.routes.js';
 import subcriptionRouter from './routes/subcription.routes.js';
 import productRouter from './routes/product.routes.js';
 import categoryRouter from './routes/category.routes.js';
@@ -62,8 +63,9 @@ app.use(
 
 // ROUTES
 app.use(`${config.prefix}/users`, userRouter);
+app.use(`${config.prefix}/stores`, storeRouter);
 app.use(`${config.prefix}/products`, productRouter);
-app.use(`${config.prefix}/categories`,categoryRouter);
+app.use(`${config.prefix}/categories`, categoryRouter);
 app.use(`${config.prefix}/subcriptions`, subcriptionRouter);
 
 // INVALID ROUTES
