@@ -28,7 +28,7 @@ const resizeStoreLogo = catchAsync(async (req, res, next) => {
     .toFormat('png')
     .png({ quality: 90 })
     .flatten({ background: '#00FFFFFF' })
-    .toFile(`public/images/logos/${req.file.filename}`);
+    .toFile(`public/images/stores/${req.file.filename}`);
 
   next();
 });
