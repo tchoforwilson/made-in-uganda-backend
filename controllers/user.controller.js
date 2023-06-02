@@ -4,31 +4,7 @@ import User from '../models/user.model.js';
 import factory from './handler.factory.js';
 import AppError from '../utilities/appError.js';
 import catchAsync from '../utilities/catchAsync.js';
-import upload from '../utilities/upload.js';
 import { filterObj } from '../utilities/util.js';
-
-/**
- * @breif Upload a single store photo
- */
-const uploadStorePhoto = upload.single('photo');
-
-/**
- * @breif Resize store photo to size 500x500 and convert format to jpeg
- * then store photo in folder public/images/stores
- */
-const resizeStorePhoto = catchAsync(async (req, res, next) => {
-  if (!req.file) return next();
-
-  req.file.filename = `user-${req.user.id}-${Date.now()}.jpeg`;
-
-  await sharp(req.file.buffer)
-    .resize(500, 500)
-    .toFormat('jpeg')
-    .jpeg({ quality: 90 })
-    .toFile(`public/images/stores/${req.file.filename}`);
-
-  next();
-});
 
 const getMe = (req, res, next) => {
   req.params.id = req.user.id;
@@ -50,16 +26,7 @@ const updateMe = catchAsync(async (req, res, next) => {
   }
 
   // 2) Filtered out unwanted fields names that are not allowed to be updated
-  const filteredBody = filterObj(
-    req.body,
-    'name',
-    'shop',
-    'email',
-    'telephone',
-    'employees',
-    'location'
-  );
-  if (req.file) filteredBody.photo = req.file.filename; // add photo file
+  const filteredBody = filterObj(req.body, 'username', 'email');
 
   // 3) Update user document
   const updatedUser = await User.findByIdAndUpdate(req.user.id, filteredBody, {
@@ -106,8 +73,6 @@ const updateUser = factory.updateOne(User);
 const deleteUser = factory.deleteOne(User);
 
 export default {
-  uploadStorePhoto,
-  resizeStorePhoto,
   getMe,
   updateMe,
   deleteMe,

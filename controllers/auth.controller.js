@@ -24,7 +24,7 @@ const signToken = (user) => {
  * @param {req} Request
  * @param {res} Response
  */
-const createSendToken = (user, statusCode, res) => {
+const createSendToken = (user, statusCode, req, res) => {
   // 1. Get token
   const token = signToken(user);
 
@@ -66,7 +66,7 @@ const signup = catchAsync(async (req, res, next) => {
   });
 
   // 3. Send response
-  createSendToken(newUser, 201, res);
+  createSendToken(newUser, 201, req, res);
 });
 
 /**
@@ -90,7 +90,7 @@ const login = catchAsync(async (req, res, next) => {
   }
 
   // 5. If everything ok, send token to client
-  createSendToken(user, 200, res);
+  createSendToken(user, 200, req, res);
 });
 
 const protect = catchAsync(async (req, res, next) => {
@@ -228,7 +228,7 @@ const resetPassword = catchAsync(async (req, res, next) => {
 
   // 3) Update changedPasswordAt property for the user
   // 4) Log the user in, send JWT
-  createSendToken(user, 200, res);
+  createSendToken(user, 200, req, res);
 });
 
 /**
