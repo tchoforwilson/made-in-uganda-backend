@@ -19,18 +19,8 @@ class UnitTest {
    */
   GenRandomValidUser() {
     const user = {
-      name: GenRandomVal.GenRandomValidString(smallMaxLength),
-      shop: GenRandomVal.GenRandomValidString(smallMaxLength),
-      telephone: GenRandomVal.GenRandomValidTelephone(),
+      username: GenRandomVal.GenRandomValidString(smallMaxLength),
       email: GenRandomVal.GenRandomValidEmail(),
-      employees: GenRandomVal.GenRandomInteger(smallMaxLength),
-      address: {
-        line_1: GenRandomVal.GenRandomValidString(smallMaxLength),
-        line_2: GenRandomVal.GenRandomValidString(smallMaxLength),
-        city: GenRandomVal.GenRandomValidString(smallMaxLength),
-        region: GenRandomVal.GenRandomValidString(smallMaxLength),
-        zipcode: GenRandomVal.GenRandomValidZipCode(smallMinLength),
-      },
     };
     return user;
   }
@@ -60,6 +50,42 @@ class UnitTest {
       users.push(this.GenRandomValidUserWithPassword());
     }
     return users;
+  }
+
+  /**
+   * @breif Generate a random valid store
+   * @param {String} userId Owner ID
+   * @returns {Object}
+   */
+  GenRandomValidStore(userId) {
+    return {
+      name: GenRandomVal.GenRandomValidString(smallMaxLength),
+      telephone: GenRandomVal.GenRandomValidTelephone(),
+      description: GenRandomVal.GenRandomValidText(smallMaxLength),
+      employees: GenRandomVal.GenRandomInteger(smallMaxLength),
+      logo: GenRandomVal.GenRandomValidPhoto(),
+      address: {
+        line_1: GenRandomVal.GenRandomValidString(smallMaxLength),
+        line_2: GenRandomVal.GenRandomValidString(smallMaxLength),
+        city: GenRandomVal.GenRandomValidString(smallMaxLength),
+        region: GenRandomVal.GenRandomValidString(smallMaxLength),
+        zipcode: GenRandomVal.GenRandomValidZipCode(smallMinLength),
+      },
+      owner: userId,
+    };
+  }
+
+  /**
+   * @breif Generate random valid stores
+   * @param {Array} userIds
+   * @returns {Array}
+   */
+  GenRandomValidStores(userIds = []) {
+    const stores = [];
+    for (let i = 0; i < userIds; i++) {
+      stores.push(this.GenRandomValidStore(userIds[i]));
+    }
+    return stores;
   }
 
   /**
