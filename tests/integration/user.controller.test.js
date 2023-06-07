@@ -119,7 +119,7 @@ describe('UserController_Tests', () => {
       expect(res.status).toBe(200);
       const value = JSON.parse(res.text);
       const { data } = value;
-      expect(data).toHaveProperty('username');
+      expect(data).toHaveProperty('name');
       expect(data).toHaveProperty('email');
     });
   });
