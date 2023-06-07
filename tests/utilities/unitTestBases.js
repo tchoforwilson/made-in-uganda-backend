@@ -1,9 +1,9 @@
 import GenRandomVal from './genRandVal.js';
 
-const secretMinLength = 8;
-const secretMaxLength = 16;
-const smallMinLength = 5;
-const smallMaxLength = 30;
+const secretMinLength = Number(8);
+const secretMaxLength = Number(16);
+const smallMinLength = Number(5);
+const smallMaxLength = Number(30);
 const NUM_OF_IMG = Number(5);
 
 const CONST_ONEU = Number(1);
@@ -19,7 +19,7 @@ class UnitTest {
    */
   GenRandomValidUser() {
     const user = {
-      username: GenRandomVal.GenRandomValidString(smallMaxLength),
+      name: GenRandomVal.GenRandomValidString(smallMaxLength),
       email: GenRandomVal.GenRandomValidEmail(),
     };
     return user;
@@ -95,6 +95,7 @@ class UnitTest {
   GenRandomValidCategory() {
     return {
       name: GenRandomVal.GenRandomValidString(smallMaxLength),
+      description: GenRandomVal.GenRandomValidText(PERCENT),
     };
   }
 
@@ -121,15 +122,17 @@ class UnitTest {
     const currencies = ['UGX', 'USD', 'EURO'];
     return {
       name: GenRandomVal.GenRandomValidString(smallMaxLength),
-      price: {
-        value: GenRandomVal.GenRandomIntegerInRange(MIN_PRICE, MAX_PRICE),
-        currency: GenRandomVal.GenRandomItem(currencies),
-      },
+      price: GenRandomVal.GenRandomIntegerInRange(MIN_PRICE, MAX_PRICE),
+      currency: GenRandomVal.GenRandomItem(currencies),
       priceDiscount: GenRandomVal.GenRandomIntegerInRange(
         CONST_ONEU,
         MIN_PRICE
       ),
-      weight: GenRandomVal.GenRandomIntegerInRange(CONST_ONEU, PERCENT),
+      measurement: {
+        value: GenRandomVal.GenRandomInteger(PERCENT),
+        unit: GenRandomVal.GenRandomValidString(smallMaxLength),
+      },
+      brand: GenRandomVal.GenRandomValidString(smallMaxLength),
       imageCover: GenRandomVal.GenRandomIntegerInRange(CONST_ONEU, NUM_OF_IMG)
         .toString()
         .concat('.jpeg'),
