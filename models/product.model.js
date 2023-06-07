@@ -15,32 +15,34 @@ const productSchema = new Schema(
         'A product name must have more or equal then 10 characters',
       ],
     },
+    brand: String,
+    measurement: {
+      value: Number,
+      unit: String,
+    },
     price: {
-      value: {
-        type: Number,
-        required: [true, 'A product must have a price!'],
+      type: Number,
+      required: [true, 'A product must have a price!'],
+    },
+    currency: {
+      type: String,
+      enum: {
+        values: ['UGX', 'USD', 'EURO'],
+        message: 'Currency is either UGX, USD or EURO',
       },
-      currency: {
-        type: String,
-        enum: {
-          values: ['UGX', 'USD', 'EURO'],
-          message: 'Currency is either UGX, USD or EURO',
-        },
-        default: 'UGX',
-      },
+      default: 'UGX',
     },
     priceDiscount: {
       type: Number,
       validate: {
         validator: function (val) {
           // this only points to current doc on NEW document creation
-          return val < this.price.value;
+          return val < this.price;
         },
         message: 'Discount price ({VALUE}) should be below regular price',
       },
     },
     percentageDiscount: Number,
-    weight: Number,
     imageCover: {
       type: String,
       required: [true, 'A product must have a cover photo'],
@@ -57,7 +59,7 @@ const productSchema = new Schema(
     },
     store: {
       type: Schema.ObjectId,
-      ref: 'User',
+      ref: 'Store',
       required: [true, 'A product must belong to a store'],
     },
   },
@@ -83,14 +85,8 @@ productSchema.pre(/^find/, function (next) {
   // Populate with category
   this.populate({
     path: 'category',
-    select: '+name',
+    select: 'name _id',
   });
-  // Populate with store
-  this.populate({
-    path: 'store',
-    select: '-__v -passwordChangedAt',
-  });
-
   next();
 });
 
