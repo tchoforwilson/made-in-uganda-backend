@@ -25,19 +25,24 @@ const createOne = (Model) =>
  * @breif Get a single document in the database collection
  * using the parameter request id
  * @param {Collection} Model -> Database collection
+ * @param {Object} popOptions -> Populate options
  * @returns {function}
  */
-const getOne = (Model) =>
+const getOne = (Model, popOptions) =>
   catchAsync(async (req, res, next) => {
     // 1. Get document
-    const doc = await Model.findById(req.params.id);
+    let query = Model.findById(req.params.id);
 
-    // 2. Check if document exist's
+    // 2. Populate with options
+    if (popOptions) query = query.populate(popOptions);
+    const doc = await query;
+
+    // 3. Check if document exist's
     if (!doc) {
       return next(new AppError('No document found with that ID', 404));
     }
 
-    // 3. Send response
+    // 4. Send response
     res.status(200).json({
       status: 'success',
       data: doc,
@@ -76,8 +81,12 @@ const getAll = (Model) =>
     // 1. To allow for nested GET product & subcription o
     let filter = {};
     if (req.params.storeId) filter = { store: req.params.storeId };
+    if (req.params.categoryId) filter = { category: req.params.categoryId };
 
-    // 2. EXECUTE THE QUERY
+    // 2. Build search regex for name
+    if (req.query.name) req.query['name'] = { $regex: req.query.name };
+
+    // 3. EXECUTE THE QUERY
     const features = new APIFeatures(Model.find(filter), req.query)
       .filter()
       .sort()
@@ -86,7 +95,7 @@ const getAll = (Model) =>
 
     const docs = await features.query;
 
-    // 3. SEND RESPONSE
+    // 4. SEND RESPONSE
     res.status(200).json({
       status: 'success',
       results: docs.length,

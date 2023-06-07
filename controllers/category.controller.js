@@ -6,7 +6,7 @@ import factory from './handler.factory.js';
  */
 export default {
   createCategory: factory.createOne(Category),
-  getCategory: factory.getOne(Category),
+  getCategory: factory.getOne(Category, { path: 'products', select: '-__v' }),
   getAllCategories: factory.getAll(Category),
   updateCategory: factory.updateOne(Category),
   deleteCategory: factory.deleteOne(Category),

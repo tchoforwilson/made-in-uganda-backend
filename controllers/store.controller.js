@@ -47,7 +47,7 @@ export default {
   setStoreLogo, // Set store logo
   createStore: factory.createOne(Store), //  Create a new store
   getAllStores: factory.getAll(Store), // Get all stores
-  getStore: factory.getOne(Store), // Get a store
+  getStore: factory.getOne(Store, { path: 'products', select: '-__v' }), // Get a store
   updateStore: factory.updateOne(Store), // Update a store
   deleteStore: factory.deleteOne(Store), // Delete a store
 };

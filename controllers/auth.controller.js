@@ -55,11 +55,11 @@ const createSendToken = (user, statusCode, req, res) => {
  */
 const signup = catchAsync(async (req, res, next) => {
   // 1. Pick required values
-  const { username, email, password, passwordConfirm } = req.body;
+  const { name, email, password, passwordConfirm } = req.body;
 
   // 2. Create new user
   const newUser = await User.create({
-    username,
+    name,
     email,
     password,
     passwordConfirm,
@@ -82,7 +82,9 @@ const login = catchAsync(async (req, res, next) => {
   }
 
   // 3. Find user with email
-  const user = await User.findOne({ email }).select('+password');
+  const user = await User.findOne({ email })
+    .select('+password')
+    .populate({ path: 'store' });
 
   // 4. Check if user exists && password is correct
   if (!user || !(await user.correctPassword(password, user.password))) {
@@ -115,7 +117,9 @@ const protect = catchAsync(async (req, res, next) => {
   const decoded = await promisify(jwt.verify)(token, config.jwt.secret);
 
   // 3. Check if user still exist's
-  const currentUser = await User.findById(decoded.user._id);
+  const currentUser = await User.findById(decoded.user._id).populate({
+    path: 'store',
+  });
 
   if (!currentUser) {
     return next(

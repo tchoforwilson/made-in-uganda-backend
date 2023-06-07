@@ -5,6 +5,12 @@ import factory from './handler.factory.js';
 import upload from '../utilities/upload.js';
 import catchAsync from '../utilities/catchAsync.js';
 
+const setProductStore = (req, res, next) => {
+  // Allow for nested routes
+  if (!req.body.store) req.body.store = req.user.store.id;
+  next();
+};
+
 /**
  * @breif Middleware to upload a product imageCover and images
  */
@@ -22,7 +28,10 @@ const resizeProductImages = catchAsync(async (req, res, next) => {
 
   // 1) Cover image
   if (req.files.imageCover) {
-    req.body.imageCover = `product-${req.params.id}-${Date.now()}-cover.jpeg`;
+    req.body.imageCover = `product-${
+      req.params.id || req.user.store.id
+    }-${Date.now()}-cover.jpeg`; // Set image cover name field
+    //Upload image
     await sharp(req.files.imageCover[0].buffer)
       .resize(640, 640, { fit: sharp.fit.cover })
       .toFormat('jpeg')
@@ -53,11 +62,12 @@ const resizeProductImages = catchAsync(async (req, res, next) => {
 });
 
 export default {
+  setProductStore,
   uploadProductImages,
   resizeProductImages,
   createProduct: factory.createOne(Product),
   updateProduct: factory.updateOne(Product),
-  getProduct: factory.getOne(Product),
+  getProduct: factory.getOne(Product, { path: 'store' }),
   getAllProducts: factory.getAll(Product),
   deleteProduct: factory.deleteOne(Product),
 };
