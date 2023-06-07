@@ -11,12 +11,21 @@ const categorySchema = new Schema(
     description: String,
   },
   {
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
     timestamps: {
       createdAt: 'createdAt',
       updatedAt: 'updatedAt',
     },
   }
 );
+
+// Virtual populate
+categorySchema.virtual('products', {
+  ref: 'Product',
+  foreignField: 'category',
+  localField: '_id',
+});
 
 const Category = model('Category', categorySchema);
 
