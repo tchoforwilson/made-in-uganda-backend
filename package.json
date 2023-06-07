@@ -1,7 +1,7 @@
 {
   "name": "made-in-uganda",
   "version": "1.0.0",
-  "description": "A platform were shops can market their products to potential custoers\"",
+  "description": "A platform were shops can market their products to potential customers",
   "main": "server.js",
   "type": "module",
   "scripts": {
