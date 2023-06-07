@@ -13,6 +13,7 @@ router
     authController.restrictTo('user'),
     productController.uploadProductImages,
     productController.resizeProductImages,
+    productController.setProductStore,
     productController.createProduct
   );
 
