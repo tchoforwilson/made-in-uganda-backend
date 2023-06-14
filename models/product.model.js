@@ -82,6 +82,11 @@ productSchema.pre('save', function (next) {
  * @breif Populate product with store when find
  */
 productSchema.pre(/^find/, function (next) {
+  // Populate with store
+  this.populate({
+    path: 'store',
+    select: 'name _id',
+  });
   // Populate with category
   this.populate({
     path: 'category',
