@@ -6,6 +6,7 @@ import xss from 'xss-clean';
 import morgan from 'morgan';
 import path from 'path';
 import cookieParser from 'cookie-parser';
+import cors from 'cors';
 import rateLimit from 'express-rate-limit';
 import { fileURLToPath } from 'url';
 
@@ -47,6 +48,9 @@ app.use(limiter);
 app.use(json({ limit: '10kb' }));
 app.use(urlencoded({ extended: true, limit: '10kb' }));
 app.use(cookieParser());
+
+// Cross origin
+app.use(cors());
 
 // Data sanitization against NoSQL query injection
 app.use(mongoSanitize());
