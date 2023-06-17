@@ -127,10 +127,25 @@ const deleteOne = (Model) =>
     });
   });
 
+/**
+ * @brief Count the number of document in a collection
+ * @param {Collection} Model  -> Model
+ * @returns {Function}
+ */
+const getCount = (Model) =>
+  catchAsync(async (req, res, next) => {
+    const count = await Model.count(req.query);
+    res.status(201).json({
+      status: 'success',
+      data: count,
+    });
+  });
+
 export default {
   createOne,
   getOne,
   updateOne,
   getAll,
   deleteOne,
+  getCount,
 };

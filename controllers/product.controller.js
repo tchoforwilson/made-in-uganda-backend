@@ -70,4 +70,5 @@ export default {
   getProduct: factory.getOne(Product, { path: 'store' }),
   getAllProducts: factory.getAll(Product),
   deleteProduct: factory.deleteOne(Product),
+  getProductCount: factory.getCount(Product),
 };

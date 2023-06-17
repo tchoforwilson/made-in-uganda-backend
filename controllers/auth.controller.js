@@ -55,11 +55,11 @@ const createSendToken = (user, statusCode, req, res) => {
  */
 const signup = catchAsync(async (req, res, next) => {
   // 1. Pick required values
-  const { name, email, password, passwordConfirm } = req.body;
+  const { username, email, password, passwordConfirm } = req.body;
 
   // 2. Create new user
   const newUser = await User.create({
-    name,
+    username,
     email,
     password,
     passwordConfirm,

@@ -10,4 +10,5 @@ export default {
   getAllCategories: factory.getAll(Category),
   updateCategory: factory.updateOne(Category),
   deleteCategory: factory.deleteOne(Category),
+  getCategoryCount: factory.getCount(Category),
 };
