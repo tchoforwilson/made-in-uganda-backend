@@ -5,6 +5,8 @@ import productController from '../controllers/product.controller.js';
 
 const router = Router({ mergeParams: true });
 
+router.get('/count', productController.getProductCount);
+
 router
   .route('/')
   .get(productController.getAllProducts)
