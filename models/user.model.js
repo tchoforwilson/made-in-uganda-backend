@@ -7,7 +7,7 @@ import config from '../configurations/config.js';
 
 const userSchema = new Schema(
   {
-    name: {
+    username: {
       type: String,
       required: [true, 'Please tell us your user name'],
     },
