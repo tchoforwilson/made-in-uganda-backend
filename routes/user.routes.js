@@ -2,6 +2,7 @@ import { Router } from 'express';
 
 import authController from '../controllers/auth.controller.js';
 import userController from '../controllers/user.controller.js';
+import eUserRole from '../utilities/enums/e.user-role.js';
 
 const router = Router();
 
@@ -19,7 +20,7 @@ router.patch('/updateMe', userController.updateMe);
 router.patch('/deleteMe', userController.deleteMe);
 
 // Restrict all route after this to admin
-router.use(authController.restrictTo('admin'));
+router.use(authController.restrictTo(eUserRole.ADMIN));
 
 router
   .route('/')
