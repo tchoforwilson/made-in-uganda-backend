@@ -48,7 +48,7 @@ const storeSchema = new Schema(
       },
       coordinates: [Number],
     },
-    owner: {
+    user: {
       type: Schema.ObjectId,
       ref: 'User',
       required: [true, 'Store must belong to an owner'],

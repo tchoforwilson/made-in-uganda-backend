@@ -3,6 +3,7 @@ import { Schema, model } from 'mongoose';
 import bcrypt from 'bcryptjs';
 import validator from 'validator';
 
+import eUserRole from '../utilities/enums/e.user-role.js';
 import config from '../configurations/config.js';
 
 const userSchema = new Schema(
@@ -21,8 +22,8 @@ const userSchema = new Schema(
     },
     role: {
       type: String,
-      enum: ['admin', 'user'],
-      default: 'user',
+      enum: [eUserRole.ADMIN, eUserRole.USER],
+      default: eUserRole.USER,
     },
     password: {
       type: String,
@@ -63,7 +64,7 @@ const userSchema = new Schema(
 // Virtual populate
 userSchema.virtual('store', {
   ref: 'Store',
-  foreignField: 'owner',
+  foreignField: 'user',
   localField: '_id',
   justOne: true,
 });
