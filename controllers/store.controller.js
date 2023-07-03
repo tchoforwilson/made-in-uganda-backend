@@ -7,7 +7,7 @@ import catchAsync from '../utilities/catchAsync.js';
 // Set store owner
 const setStoreUser = (req, res, next) => {
   // Allowed for nested routes
-  if (!req.body.owner) req.body.owner = req.user.id;
+  if (!req.body.user) req.body.user = req.user.id;
   next();
 };
 
@@ -30,21 +30,16 @@ const resizeStoreLogo = catchAsync(async (req, res, next) => {
     .flatten({ background: '#00FFFFFF' })
     .toFile(`public/images/stores/${req.file.filename}`);
 
+  // 4. Set filename on request body
+  req.body.logo = req.file.filename;
+
   next();
 });
-
-// Set store logo
-const setStoreLogo = (req, res, next) => {
-  // Allowed for file upload
-  if (req.file) req.body.logo = req.file.filename;
-  next();
-};
 
 export default {
   setStoreUser, // Set store owner
   uploadStoreLogo, // Upload store logo
   resizeStoreLogo, // resize store logo
-  setStoreLogo, // Set store logo
   createStore: factory.createOne(Store), //  Create a new store
   getAllStores: factory.getAll(Store), // Get all stores
   getStore: factory.getOne(Store, { path: 'products', select: '-__v' }), // Get a store

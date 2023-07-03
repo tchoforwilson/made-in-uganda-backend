@@ -31,9 +31,10 @@ const resizeProductImages = catchAsync(async (req, res, next) => {
     req.body.imageCover = `product-${
       req.params.id || req.user.store.id
     }-${Date.now()}-cover.jpeg`; // Set image cover name field
+
     //Upload image
     await sharp(req.files.imageCover[0].buffer)
-      .resize(640, 640, { fit: sharp.fit.cover })
+      .resize(800, 800, { fit: sharp.fit.cover })
       .toFormat('jpeg')
       .jpeg({ quality: 90 })
       .toFile(`public/images/products/${req.body.imageCover}`);
@@ -48,7 +49,7 @@ const resizeProductImages = catchAsync(async (req, res, next) => {
         const filename = `product-${req.params.id}-${Date.now()}-${i + 1}.jpeg`;
 
         await sharp(file.buffer)
-          .resize(640, 640, { fit: sharp.fit.cover })
+          .resize(800, 800, { fit: sharp.fit.cover })
           .toFormat('jpeg')
           .jpeg({ quality: 90 })
           .toFile(`public/images/products/${filename}`);
@@ -61,6 +62,21 @@ const resizeProductImages = catchAsync(async (req, res, next) => {
   next();
 });
 
+const getDistinctProducts = catchAsync(async (req, res, next) => {
+  const page = req.query.page * 1 || 1;
+  const limit = req.query.limit * 1 || 12;
+  const skip = (page - 1) * limit;
+  const products = await Product.aggregate([
+    { $skip: skip },
+    { $limit: limit },
+  ]);
+
+  res.status(200).json({
+    status: 'success',
+    data: products,
+  });
+});
+
 export default {
   setProductStore,
   uploadProductImages,
@@ -71,4 +87,5 @@ export default {
   getAllProducts: factory.getAll(Product),
   deleteProduct: factory.deleteOne(Product),
   getProductCount: factory.getCount(Product),
+  getDistinctProducts,
 };

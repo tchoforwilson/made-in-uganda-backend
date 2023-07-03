@@ -15,9 +15,7 @@ const createOne = (Model) =>
     // 2. Send resposne
     res.status(201).json({
       status: 'success',
-      data: {
-        doc,
-      },
+      data: doc,
     });
   });
 
@@ -84,7 +82,8 @@ const getAll = (Model) =>
     if (req.params.categoryId) filter = { category: req.params.categoryId };
 
     // 2. Build search regex for name
-    if (req.query.name) req.query['name'] = { $regex: req.query.name };
+    if (req.query.name)
+      req.query['name'] = { $regex: req.query.name, $options: 'i' };
 
     // 3. EXECUTE THE QUERY
     const features = new APIFeatures(Model.find(filter), req.query)
@@ -99,9 +98,7 @@ const getAll = (Model) =>
     res.status(200).json({
       status: 'success',
       results: docs.length,
-      data: {
-        data: docs,
-      },
+      data: docs,
     });
   });
 
@@ -127,6 +124,16 @@ const deleteOne = (Model) =>
     });
   });
 
+const getDistinct = (Model, field) =>
+  catchAsync(async (req, res, next) => {
+    const docs = await Model.distinct(field);
+
+    res.status(200).json({
+      status: 'success',
+      data: docs,
+    });
+  });
+
 /**
  * @brief Count the number of document in a collection
  * @param {Collection} Model  -> Model
@@ -135,7 +142,7 @@ const deleteOne = (Model) =>
 const getCount = (Model) =>
   catchAsync(async (req, res, next) => {
     const count = await Model.count(req.query);
-    res.status(201).json({
+    res.status(200).json({
       status: 'success',
       data: count,
     });

@@ -67,7 +67,6 @@ const createUser = (req, res) => {
 
 const getUser = factory.getOne(User, {
   path: 'store',
-  select: '+_id name telephone',
 });
 const getAllUsers = factory.getAll(User);
 
