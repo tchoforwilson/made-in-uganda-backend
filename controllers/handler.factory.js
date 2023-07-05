@@ -15,6 +15,7 @@ const createOne = (Model) =>
     // 2. Send resposne
     res.status(201).json({
       status: 'success',
+      message: 'Data saved',
       data: doc,
     });
   });
@@ -43,6 +44,7 @@ const getOne = (Model, popOptions) =>
     // 4. Send response
     res.status(200).json({
       status: 'success',
+      message: 'Data fetch',
       data: doc,
     });
   });
@@ -64,6 +66,7 @@ const updateOne = (Model) =>
 
     res.status(200).json({
       status: 'success',
+      message: 'Data updated',
       data: doc,
     });
   });
@@ -97,6 +100,7 @@ const getAll = (Model) =>
     // 4. SEND RESPONSE
     res.status(200).json({
       status: 'success',
+      message: 'Data fetch',
       results: docs.length,
       data: docs,
     });
@@ -120,6 +124,7 @@ const deleteOne = (Model) =>
     // 3. Send the response
     res.status(204).json({
       status: 'success',
+      message: 'Data deleted',
       data: null,
     });
   });
@@ -130,6 +135,7 @@ const getDistinct = (Model, field) =>
 
     res.status(200).json({
       status: 'success',
+      message: 'Data fetch',
       data: docs,
     });
   });
@@ -144,6 +150,7 @@ const getCount = (Model) =>
     const count = await Model.count(req.query);
     res.status(200).json({
       status: 'success',
+      message: 'Data counted',
       data: count,
     });
   });
