@@ -98,7 +98,7 @@ const getAll = (Model) =>
 
     // 4. SEND RESPONSE
     res.status(200).json({
-      status: 'success'
+      status: 'success',
       results: docs.length,
       data: docs,
     });
