@@ -20,11 +20,12 @@ const signToken = (user) => {
 /**
  * @breif Create and send as response jwt token
  * @param {Object} user -> User object
+ * @param {String} message -> Response message
  * @param {statusCode} statusCode -> Response status code
  * @param {req} Request
  * @param {res} Response
  */
-const createSendToken = (user, statusCode, req, res) => {
+const createSendToken = (user, message, statusCode, req, res) => {
   // 1. Get token
   const token = signToken(user);
 
@@ -43,6 +44,7 @@ const createSendToken = (user, statusCode, req, res) => {
   // 4. Send response
   res.status(statusCode).json({
     status: 'success',
+    message,
     token,
     data: {
       user,
@@ -66,7 +68,7 @@ const signup = catchAsync(async (req, res, next) => {
   });
 
   // 3. Send response
-  createSendToken(newUser, 201, req, res);
+  createSendToken(newUser, 'Your registered', 201, req, res);
 });
 
 /**
@@ -92,7 +94,7 @@ const login = catchAsync(async (req, res, next) => {
   }
 
   // 5. If everything ok, send token to client
-  createSendToken(user, 200, req, res);
+  createSendToken(user, 'Your log in', 200, req, res);
 });
 
 const protect = catchAsync(async (req, res, next) => {
@@ -232,7 +234,7 @@ const resetPassword = catchAsync(async (req, res, next) => {
 
   // 3) Update changedPasswordAt property for the user
   // 4) Log the user in, send JWT
-  createSendToken(user, 200, req, res);
+  createSendToken(user, 'Password resetted', 200, req, res);
 });
 
 /**
@@ -254,7 +256,7 @@ const updatePassword = catchAsync(async (req, res, next) => {
   // User.findByIdAndUpdate will NOT work as intended!
 
   // 4) Log user in, send JWT
-  createSendToken(user, 200, req, res);
+  createSendToken(user, 'Password updated', 200, req, res);
 });
 
 export default {
