@@ -24,10 +24,8 @@ const resizeStoreLogo = catchAsync(async (req, res, next) => {
 
   // 3. Upload and resize logo
   await sharp(req.file.buffer)
-    .resize(250, 100, { fit: 'contain' })
     .toFormat('png')
     .png({ quality: 90 })
-    .flatten({ background: '#00FFFFFF' })
     .toFile(`public/images/stores/${req.file.filename}`);
 
   // 4. Set filename on request body
@@ -42,7 +40,7 @@ export default {
   resizeStoreLogo, // resize store logo
   createStore: factory.createOne(Store), //  Create a new store
   getAllStores: factory.getAll(Store), // Get all stores
-  getStore: factory.getOne(Store, { path: 'products', select: '-__v' }), // Get a store
+  getStore: factory.getOne(Store, { path: 'user', select: '-__v' }), // Get a store
   updateStore: factory.updateOne(Store), // Update a store
   deleteStore: factory.deleteOne(Store), // Delete a store
   getStoresCount: factory.getCount(Store), // Count stores
