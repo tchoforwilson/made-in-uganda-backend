@@ -71,6 +71,18 @@ storeSchema.virtual('products', {
   localField: '_id',
 });
 
+/**
+ * @breif Populate store with user when find
+ */
+storeSchema.pre(/^find/, function (next) {
+  // Populate with user
+  this.populate({
+    path: 'user',
+    select: 'username email _id',
+  });
+  next();
+});
+
 const Store = model('Store', storeSchema);
 
 export default Store;
