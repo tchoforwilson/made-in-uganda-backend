@@ -26,7 +26,7 @@ router
   .get(productController.getProduct)
   .patch(
     authController.protect,
-    authController.restrictTo(eUserRole.ADMIN),
+    authController.restrictTo(eUserRole.USER),
     productController.uploadProductImages,
     productController.resizeProductImages,
     productController.updateProduct
