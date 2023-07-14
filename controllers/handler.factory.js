@@ -123,7 +123,7 @@ const deleteOne = (Model) =>
     res.status(204).json({
       status: 'success',
       message: 'data deleted',
-      data: null,
+      data: doc,
     });
   });
 
@@ -144,7 +144,12 @@ const getDistinct = (Model, field) =>
  */
 const getCount = (Model) =>
   catchAsync(async (req, res, next) => {
-    const count = await Model.count(req.query);
+    let filtered = {};
+    if (req.params.storeId) filtered.store = req.params.storeId;
+    if (req.params.categoryId) filtered.category = req.params.categoryId;
+    if (req.params.productId) filtered.category = req.params.productId;
+    const searchQuery = { ...filtered, ...req.query };
+    const count = await Model.count(searchQuery);
     res.status(200).json({
       status: 'success',
       data: count,
