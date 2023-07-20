@@ -31,7 +31,7 @@ const createOne = (Model) =>
 const getOne = (Model, popOptions) =>
   catchAsync(async (req, res, next) => {
     // 1. Get document
-    let query = Model.findById(req.params.id);
+    let query = await Model.findById(req.params.id);
 
     // 2. Populate with options
     if (popOptions) query = query.populate(popOptions);
@@ -57,7 +57,7 @@ const getOne = (Model, popOptions) =>
  */
 const updateOne = (Model) =>
   catchAsync(async (req, res, next) => {
-    const doc = await Model.findByIdAndUpdate(req.params.id, req.body, {
+    const doc = await Model.findOneAndUpdate({ _id: req.params.id }, req.body, {
       new: true,
       runValidators: true,
     });
