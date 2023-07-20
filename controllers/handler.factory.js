@@ -127,16 +127,6 @@ const deleteOne = (Model) =>
     });
   });
 
-const getDistinct = (Model, field) =>
-  catchAsync(async (req, res, next) => {
-    const docs = await Model.distinct(field);
-
-    res.status(200).json({
-      status: 'success',
-      data: docs,
-    });
-  });
-
 /**
  * @brief Count the number of document in a collection
  * @param {Collection} Model  -> Model
@@ -147,7 +137,7 @@ const getCount = (Model) =>
     let filtered = {};
     if (req.params.storeId) filtered.store = req.params.storeId;
     if (req.params.categoryId) filtered.category = req.params.categoryId;
-    if (req.params.productId) filtered.category = req.params.productId;
+
     const searchQuery = { ...filtered, ...req.query };
     const count = await Model.count(searchQuery);
     res.status(200).json({
