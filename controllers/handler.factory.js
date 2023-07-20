@@ -1,3 +1,4 @@
+import { Types } from 'mongoose';
 import AppError from '../utilities/appError.js';
 import catchAsync from '../utilities/catchAsync.js';
 import APIFeatures from '../utilities/apiFeatures.js';
@@ -128,6 +129,39 @@ const deleteOne = (Model) =>
   });
 
 /**
+ * @breif Query distinct data from a model
+ * @param {Collection} Model Collection to get distinct items
+ * @returns {Function}
+ */
+const getDistinct = (Model) =>
+  catchAsync(async (req, res, next) => {
+    // 1. Build pagination
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 12;
+    const skip = (page - 1) * limit;
+
+    // 2. Build query
+    let match = {};
+    if (req.query.name) match.name = req.query.name;
+    if (req.query.category)
+      match.category = new Types.ObjectId(req.query.category);
+    if (req.query.store) match.store = new Types.ObjectId(req.query.store);
+
+    // 3. Perform query
+    const products = await Model.aggregate([
+      { $match: match },
+      { $skip: skip },
+      { $sample: { size: limit } },
+    ]);
+
+    // 4. Send results
+    res.status(200).json({
+      status: 'success',
+      data: products,
+    });
+  });
+
+/**
  * @brief Count the number of document in a collection
  * @param {Collection} Model  -> Model
  * @returns {Function}
@@ -152,5 +186,6 @@ export default {
   updateOne,
   getAll,
   deleteOne,
+  getDistinct,
   getCount,
 };
