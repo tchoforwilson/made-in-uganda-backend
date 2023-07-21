@@ -8,6 +8,9 @@ const router = Router({ mergeParams: true });
 
 router.get('/count', productController.getProductCount);
 router.get('/distinct', productController.getDistinctProducts);
+router
+  .route('/top-products')
+  .get(productController.aliasTopProducts, productController.getAllProducts);
 
 router
   .route('/')
