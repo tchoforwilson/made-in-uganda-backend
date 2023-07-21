@@ -64,8 +64,16 @@ const resizeProductImages = catchAsync(async (req, res, next) => {
   next();
 });
 
+const aliasTopProducts = (req, res, next) => {
+  req.query.limit = '6';
+  req.query.sort = '+percentageDiscount';
+  req.query.fields = 'priceDiscount,percentageDiscount,name,imageCover';
+  next();
+};
+
 export default {
   setProductStore,
+  aliasTopProducts,
   uploadProductImages,
   resizeProductImages,
   createProduct: factory.createOne(Product),
