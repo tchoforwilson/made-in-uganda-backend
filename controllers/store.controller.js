@@ -43,5 +43,6 @@ export default {
   getStore: factory.getOne(Store, { path: 'user', select: '-__v' }), // Get a store
   updateStore: factory.updateOne(Store), // Update a store
   deleteStore: factory.deleteOne(Store), // Delete a store
+  getDistinctStores: factory.getDistinct(Store), // Get distinct stores
   getStoresCount: factory.getCount(Store), // Count stores
 };
