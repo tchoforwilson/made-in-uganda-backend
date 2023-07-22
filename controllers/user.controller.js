@@ -6,6 +6,9 @@ import AppError from '../utilities/appError.js';
 import catchAsync from '../utilities/catchAsync.js';
 import { filterObj } from '../utilities/util.js';
 
+/**
+ * @bref Set parameter id in getting current user
+ */
 const getMe = (req, res, next) => {
   req.params.id = req.user.id;
   next();
@@ -36,7 +39,7 @@ const updateMe = catchAsync(async (req, res, next) => {
 
   res.status(200).json({
     status: 'success',
-    message:'data updated!',
+    message: 'data updated!',
     data: {
       user: updatedUser,
     },
