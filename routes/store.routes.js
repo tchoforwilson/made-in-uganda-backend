@@ -12,6 +12,12 @@ router.use('/:storeId/products', productRouter);
 
 router.get('/count', storeController.getStoresCount);
 router.route('/distinct', storeController.getDistinctStores);
+router.get(
+  '/myStore',
+  authController.protect,
+  storeController.getMyStore,
+  storeController.getStore
+);
 
 router
   .route('/')
