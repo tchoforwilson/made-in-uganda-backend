@@ -4,6 +4,14 @@ import factory from './handler.factory.js';
 import upload from '../utilities/upload.js';
 import catchAsync from '../utilities/catchAsync.js';
 
+/**
+ * @bref Set parameter id in getting current user store
+ */
+const getMyStore = (req, res, next) => {
+  req.params.id = req.user.store.id;
+  next();
+};
+
 // Set store owner
 const setStoreUser = (req, res, next) => {
   // Allowed for nested routes
@@ -35,6 +43,7 @@ const resizeStoreLogo = catchAsync(async (req, res, next) => {
 });
 
 export default {
+  getMyStore, //  Get current user store
   setStoreUser, // Set store owner
   uploadStoreLogo, // Upload store logo
   resizeStoreLogo, // resize store logo
