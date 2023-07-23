@@ -19,7 +19,10 @@ const storeSchema = new Schema(
       type: String,
       validate: [validator.isMobilePhone],
     },
-    logo: String,
+    logo: {
+      type: String,
+      default: 'default.png',
+    },
     address: {
       line_1: {
         type: String,
