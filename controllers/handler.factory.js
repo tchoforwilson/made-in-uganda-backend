@@ -107,6 +107,8 @@ const getAll = (Model) =>
 
 /**
  * @breif Delete a single document in the database collection
+ * NB: We set the status code here to 200 (OK) because we want the
+ * deleted data returned.
  * @param {Collection} Model -> Database collection
  * @returns {function}
  */
@@ -121,7 +123,7 @@ const deleteOne = (Model) =>
     }
 
     // 3. Send the response
-    res.status(204).json({
+    res.status(200).json({
       status: 'success',
       message: 'data deleted',
       data: doc,
