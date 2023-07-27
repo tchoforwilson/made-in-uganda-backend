@@ -10,6 +10,17 @@ const setProductStore = (req, res, next) => {
   if (!req.body.store) req.body.store = req.user.store.id;
   next();
 };
+/**
+ * @breif Set Store parameter
+ * @param {Request} req Request
+ * @param {Response} res Response
+ * @param {Function} next Next
+ */
+const setStoreParam = (req, res, next) => {
+  // For nested route
+  req.params.storeId = req.user.store.id;
+  next();
+};
 
 /**
  * @breif Middleware to upload a product imageCover and images
@@ -74,6 +85,7 @@ const aliasTopProducts = (req, res, next) => {
 
 export default {
   setProductStore,
+  setStoreParam,
   aliasTopProducts,
   uploadProductImages,
   resizeProductImages,
