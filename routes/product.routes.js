@@ -6,11 +6,27 @@ import eUserRole from '../utilities/enums/e.user-role.js';
 
 const router = Router({ mergeParams: true });
 
-router.get('/count', productController.getProductCount);
-router.get('/distinct', productController.getDistinctProducts);
+router.route('/count').get(productController.getProductCount);
+router.route('/distinct').get(productController.getDistinctProducts);
+router
+  .route('/myStore-productCount')
+  .get(
+    authController.protect,
+    authController.restrictTo(eUserRole.USER),
+    productController.setStoreParam,
+    productController.getProductCount
+  );
 router
   .route('/top-products')
   .get(productController.aliasTopProducts, productController.getAllProducts);
+router
+  .route('/my-products')
+  .get(
+    authController.protect,
+    authController.restrictTo(eUserRole.USER),
+    productController.setStoreParam,
+    productController.getAllProducts
+  );
 
 router
   .route('/')
