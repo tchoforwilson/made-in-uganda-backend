@@ -29,10 +29,7 @@ const productSchema = new Schema(
     },
     currency: {
       type: String,
-      enum: {
-        values: ['UGX', 'USD', 'EURO'],
-        message: 'Currency is either UGX, USD or EURO',
-      },
+      enum: ['UGX', 'USD', 'EURO'],
       default: 'UGX',
     },
     priceDiscount: Number,

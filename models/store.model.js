@@ -21,7 +21,6 @@ const storeSchema = new Schema(
     },
     logo: {
       type: String,
-      default: 'default.png',
     },
     address: {
       line_1: {
@@ -81,7 +80,7 @@ storeSchema.pre(/^find/, function (next) {
   // Populate with user
   this.populate({
     path: 'user',
-    select: 'username email _id',
+    select: 'username email _id id',
   });
   next();
 });
