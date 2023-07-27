@@ -60,6 +60,8 @@ const productSchema = new Schema(
     },
   },
   {
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
     timestamps: {
       createdAt: 'createdAt',
       updatedAt: 'updatedAt',
