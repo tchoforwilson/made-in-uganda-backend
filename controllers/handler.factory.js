@@ -135,31 +135,42 @@ const deleteOne = (Model) =>
  * @param {Collection} Model Collection to get distinct items
  * @returns {Function}
  */
-const getDistinct = (Model) =>
+const getDistinct = (Model, popOptions) =>
   catchAsync(async (req, res, next) => {
     // 1. Build pagination
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 12;
     const skip = (page - 1) * limit;
 
-    // 2. Build query
+    // 2. Build match stage
     let match = {};
     if (req.query.name) match.name = req.query.name;
     if (req.query.category)
       match.category = new Types.ObjectId(req.query.category);
     if (req.query.store) match.store = new Types.ObjectId(req.query.store);
+    const matchStage = { $match: match };
 
-    // 3. Perform query
-    const products = await Model.aggregate([
-      { $match: match },
-      { $skip: skip },
-      { $sample: { size: limit } },
-    ]);
+    // 3. Build sample stage
+    const sampleStage = { $sample: { size: limit } };
 
-    // 4. Send results
+    // 4. Build skip stage
+    const skipStage = { $skip: skip };
+
+    // 5. Build aggregation pipeline
+    const pipeline = [matchStage, skipStage, sampleStage];
+
+    // 6. Perform population
+    if (popOptions) {
+      pipeline.push({ $lookup: popOptions }, { $unwind: '$' + popOptions.as });
+    }
+
+    // 7. Perform aggregation
+    const docs = await Model.aggregate(pipeline);
+
+    // 8. Send results
     res.status(200).json({
       status: 'success',
-      data: products,
+      data: docs,
     });
   });
 
