@@ -66,8 +66,9 @@ const resizeProductImages = catchAsync(async (req, res, next) => {
 
 const aliasTopProducts = (req, res, next) => {
   req.query.limit = '6';
-  req.query.sort = '+percentageDiscount';
-  req.query.fields = 'priceDiscount,percentageDiscount,name,imageCover';
+  req.query.sort = '-percentageDiscount';
+  req.query.fields =
+    'price,priceDiscount,percentageDiscount,currency,name,imageCover';
   next();
 };
 
@@ -82,5 +83,10 @@ export default {
   getProduct: factory.getOne(Product, { path: 'store' }),
   deleteProduct: factory.deleteOne(Product),
   getProductCount: factory.getCount(Product),
-  getDistinctProducts: factory.getDistinct(Product),
+  getDistinctProducts: factory.getDistinct(Product, {
+    from: 'stores',
+    localField: 'store',
+    foreignField: '_id',
+    as: 'store',
+  }),
 };
