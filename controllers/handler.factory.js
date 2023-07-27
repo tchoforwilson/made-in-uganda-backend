@@ -181,12 +181,18 @@ const getDistinct = (Model, popOptions) =>
  */
 const getCount = (Model) =>
   catchAsync(async (req, res, next) => {
+    // 1. Build filter
     let filtered = {};
     if (req.params.storeId) filtered.store = req.params.storeId;
     if (req.params.categoryId) filtered.category = req.params.categoryId;
 
+    // 2. Create search query
     const searchQuery = { ...filtered, ...req.query };
+
+    // 3. Execute query
     const count = await Model.count(searchQuery);
+
+    // 4. Send response
     res.status(200).json({
       status: 'success',
       data: count,
