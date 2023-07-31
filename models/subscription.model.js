@@ -35,8 +35,8 @@ const subscriptionSchema = new Schema(
  */
 subscriptionSchema.pre(/^find/, function (next) {
   this.populate({
-    path: 'username',
-    select: 'name email',
+    path: 'user',
+    select: 'username email',
   });
   next();
 });
