@@ -27,7 +27,7 @@ const setStoreParam = (req, res, next) => {
  */
 const uploadProductImages = upload.fields([
   { name: 'imageCover', maxCount: 1 },
-  { name: 'images', maxCount: 3 },
+  { name: 'images', maxCount: 10 },
 ]);
 
 /**
@@ -45,7 +45,6 @@ const resizeProductImages = catchAsync(async (req, res, next) => {
 
     //Upload image
     await sharp(req.files.imageCover[0].buffer)
-      .resize(800, 800)
       .toFormat('jpeg')
       .jpeg({ quality: 90 })
       .toFile(`public/images/products/${req.body.imageCover}`);
