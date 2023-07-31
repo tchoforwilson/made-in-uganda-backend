@@ -1,10 +1,10 @@
 import { Schema, model } from 'mongoose';
 
 const subscriptionSchema = new Schema({
-  store: {
+  user: {
     type: Schema.Types.ObjectId,
     ref: 'User',
-    required: [true, 'Subcription must belong to a store!'],
+    required: [true, 'Subcription must belong to a user!'],
   },
   amount: {
     type: Number,
