@@ -1,9 +1,13 @@
 import Subcription from '../models/subcription.model.js';
 import factory from './handler.factory.js';
 
-const setSubcriptionStoreId = (req, res, next) => {
+/**
+ *
+ * @breif Set subcription user id
+ */
+const setSubcriptionUserId = (req, res, next) => {
   // Allow for nested routes
-  if (!req.body.store) req.body.store = req.user.id || req.params.storeId;
+  if (!req.body.user) req.body.user = req.user.id || req.params.id;
   next();
 };
 
@@ -14,7 +18,7 @@ const updateSubcription = factory.updateOne(Subcription);
 const deleteSubcription = factory.deleteOne(Subcription);
 
 export default {
-  setSubcriptionStoreId,
+  setSubcriptionUserId,
   createSubscription,
   getSubcription,
   getAllSubcriptions,
