@@ -160,6 +160,23 @@ const restrictTo = (...roles) => {
   };
 };
 
+const checkSubscriptionStatus = catchAsync(async (req, res, next) => {
+  // 1. Get user
+  const user = await User.findById(req.user.id);
+
+  // 2. Check subcription status
+  if (user.subscriptionStatus === 'inactive') {
+    return next(
+      new AppError(
+        'Your subscription has expired. Please renew your subscription to continue using our service.',
+        401
+      )
+    );
+  }
+
+  next();
+});
+
 /**
  * @breif Controller for user to get token for password reset
  * after user forgot password
@@ -264,6 +281,7 @@ export default {
   login,
   protect,
   restrictTo,
+  checkSubscriptionStatus,
   forgotPassword,
   resetPassword,
   updatePassword,
