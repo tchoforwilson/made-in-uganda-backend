@@ -25,6 +25,11 @@ const userSchema = new Schema(
       enum: [eUserRole.ADMIN, eUserRole.USER],
       default: eUserRole.USER,
     },
+    subscriptionStatus: {
+      type: String,
+      enum: ['active', 'inactive'],
+      default: 'inactive',
+    },
     password: {
       type: String,
       required: [true, 'Please provide password'],
