@@ -34,6 +34,7 @@ router
   .post(
     authController.protect,
     authController.restrictTo(eUserRole.USER),
+    authController.checkSubscriptionStatus,
     productController.uploadProductImages,
     productController.resizeProductImages,
     productController.setProductStore,
@@ -46,6 +47,7 @@ router
   .patch(
     authController.protect,
     authController.restrictTo(eUserRole.USER),
+    authController.checkSubscriptionStatus,
     productController.uploadProductImages,
     productController.resizeProductImages,
     productController.updateProduct
