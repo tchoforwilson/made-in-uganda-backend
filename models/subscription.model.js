@@ -15,10 +15,6 @@ const subscriptionSchema = new Schema(
       type: Date,
       default: Date.now(),
     },
-    paid: {
-      type: Boolean,
-      default: false,
-    },
   },
   {
     toJSON: { virtuals: true },
