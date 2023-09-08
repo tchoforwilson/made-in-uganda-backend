@@ -1,10 +1,33 @@
-import sharp from 'sharp';
+import cron from 'node-cron';
 import User from '../models/user.model.js';
 
 import factory from './handler.factory.js';
 import AppError from '../utilities/appError.js';
 import catchAsync from '../utilities/catchAsync.js';
 import { filterObj } from '../utilities/util.js';
+import { MONTHLY_SUBCRIPTIONS_TIME } from '../utilities/constants/index.js';
+
+/**
+ * @breif Create a cron job to run a script that updates
+ * the subscription status of users who haven't paid in the last 30 days:
+ * The function is then scheduled to run every day at midnight
+ */
+cron.schedule('0 0 * * *', async () => {
+  // 1. Set number of days for job to run
+  const thirtyDaysAgo = new Date(Date.now() * MONTHLY_SUBCRIPTIONS_TIME);
+
+  // 2. Fetch all the users
+  const users = await User.find({
+    subscriptionStatus: 'active',
+    lastPaymentDate: { $lt: thirtyDaysAgo },
+  });
+
+  // 3. Update all users subcription status
+  for (const user of users) {
+    user.subscriptionStatus = 'inactive';
+    await user.save();
+  }
+});
 
 /**
  * @bref Set parameter id in getting current user
