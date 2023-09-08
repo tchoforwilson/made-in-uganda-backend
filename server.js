@@ -11,10 +11,12 @@ process.on('uncaughtException', (err) => {
 import app from './app.js';
 
 // Connect to database
-let DATABASE = config.db.dev;
 // Environment
 let env = config.env;
-if (env === 'production') DATABASE = config.db.prod;
+let DATABASE = null;
+if (env === 'development') DATABASE = config.db.dev;
+if (env === 'production')
+  DATABASE = config.db.prod.replace('<PASSWORD>', config.db.password);
 if (env === 'test') DATABASE = config.db.test;
 
 mongoose
