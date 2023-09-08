@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-dotenv.config({ path: './config.env' });
+dotenv.config({ path: './.env' });
 
 /**
  * @breif Configuration object to hold all environmental variables
@@ -11,7 +11,7 @@ const config = {
    */
   env: process.env.NODE_ENV,
   port: process.env.PORT || 9000,
-  prefix: process.env.API_PREFIX || '/api/v1',
+  prefix: process.env.API_PREFIX || '/api',
   /**
    * @breif Database for various environments
    */
@@ -19,6 +19,7 @@ const config = {
     dev: process.env.DATABASE_DEV,
     test: process.env.DATABASE_TEST,
     prod: process.env.DATABASE_PROD,
+    password: process.env.DATABASE_PASSWORD,
   },
   /**
    * @breif JWT important variables
@@ -37,6 +38,13 @@ const config = {
     password: process.env.EMAIL_PASSWORD,
     host: process.env.EMAIL_HOST,
     port: process.env.EMAIL_PORT,
+  },
+  /**
+   * @breif Pay pay variable
+   */
+  paypay: {
+    id: process.env.PAYPAL_CLIENT_ID,
+    key: process.env.PAYPAY_KEY,
   },
 };
 
