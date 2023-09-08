@@ -13,6 +13,7 @@ import { fileURLToPath } from 'url';
 import config from './configurations/config.js';
 import globalErrorHandler from './controllers/error.controller.js';
 import AppError from './utilities/appError.js';
+import authRouter from './routes/auth.routes.js';
 import userRouter from './routes/user.routes.js';
 import storeRouter from './routes/store.routes.js';
 import subscriptionRouter from './routes/subscription.routes.js';
@@ -42,7 +43,7 @@ const limiter = rateLimit({
   message: 'Too many requests from this IP, please try again in an hour!',
 });
 
-//app.use(limiter);
+app.use(limiter);
 
 // Body parser, reading data from body into req.body
 app.use(json({ limit: '10kb' }));
@@ -66,6 +67,7 @@ app.use(
 );
 
 // ROUTES
+app.use(`${config.prefix}/auth`, authRouter);
 app.use(`${config.prefix}/users`, userRouter);
 app.use(`${config.prefix}/stores`, storeRouter);
 app.use(`${config.prefix}/products`, productRouter);
