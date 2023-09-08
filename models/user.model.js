@@ -30,6 +30,9 @@ const userSchema = new Schema(
       enum: ['active', 'inactive'],
       default: 'inactive',
     },
+    lastPaymentDate: {
+      type: Date,
+    },
     password: {
       type: String,
       required: [true, 'Please provide password'],
