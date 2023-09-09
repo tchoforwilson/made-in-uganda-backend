@@ -53,6 +53,12 @@ app.use(cookieParser());
 // Cross origin
 app.use(cors());
 
+// Allowed origin
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', config.origin);
+  next();
+});
+
 // Data sanitization against NoSQL query injection
 app.use(mongoSanitize());
 
