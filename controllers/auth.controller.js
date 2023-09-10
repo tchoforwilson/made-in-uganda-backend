@@ -2,10 +2,12 @@ import jwt from 'jsonwebtoken';
 import { promisify } from 'util';
 
 import User from '../models/user.model.js';
+import Subscription from '../models/subscription.model.js';
 import email from '../utilities/email.js';
 import config from '../configurations/config.js';
 import catchAsync from '../utilities/catchAsync.js';
 import AppError from '../utilities/appError.js';
+import { subcriptionIsExpired } from '../utilities/util.js';
 
 /**
  * @breif Generate user jwt sign token
@@ -165,7 +167,10 @@ const checkSubscriptionStatus = catchAsync(async (req, res, next) => {
   const user = await User.findById(req.user.id);
 
   // 2. Check subcription status
-  if (user.subscriptionStatus === 'inactive') {
+  if (
+    user.subscriptionStatus === 'inactive' ||
+    subcriptionIsExpired(user.lastPaymentDate)
+  ) {
     return next(
       new AppError(
         'Your subscription has expired. Please renew your subscription to continue using our service.',
@@ -175,6 +180,47 @@ const checkSubscriptionStatus = catchAsync(async (req, res, next) => {
   }
 
   next();
+});
+
+/**
+ * @breif Middleware for user subscription payment
+ */
+const paySubscription = catchAsync(async (req, res, next) => {
+  // 1. Get user
+  const user = await User.findById(req.user.id);
+
+  // 2. Check if subscription has expired
+  if (
+    !subcriptionIsExpired(user.lastPaymentDate) ||
+    user.subscriptionStatus === 'active'
+  ) {
+    return next(new AppError('Your subscription has not expire!', 400));
+  }
+
+  // 3. Check if amount is pressent in request
+  if (!req.body.amount || req.body.amount < 50000) {
+    return next(new AppError('Invalid amount for subscription payment', 400));
+  }
+
+  // 4. Create subscription
+  await Subscription.create({
+    user: req.user.id,
+    amount: req.body.amount,
+  });
+
+  // 5. Update user subscription details
+  user.subscriptionStatus = 'active';
+  user.lastPaymentDate = Date.now();
+  await user.save({ validateBeforeSave: false });
+
+  // 6. Send response
+  res.status(201).json({
+    status: 'success',
+    message: 'Subscription paid successfully',
+    data: {
+      user,
+    },
+  });
 });
 
 /**
@@ -282,6 +328,7 @@ export default {
   protect,
   restrictTo,
   checkSubscriptionStatus,
+  paySubscription,
   forgotPassword,
   resetPassword,
   updatePassword,
