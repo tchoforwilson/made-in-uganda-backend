@@ -43,7 +43,7 @@ const limiter = rateLimit({
   message: 'Too many requests from this IP, please try again in an hour!',
 });
 
-app.use(limiter);
+//app.use(limiter);
 
 // Body parser, reading data from body into req.body
 app.use(json({ limit: '10kb' }));
@@ -68,7 +68,13 @@ app.use(xss());
 // Prevent parameter pollution
 app.use(
   hpp({
-    whitelist: ['category', 'price'],
+    whitelist: [
+      'category',
+      'price',
+      'amount',
+      'subscriptionStatus',
+      'datePaid',
+    ],
   })
 );
 
