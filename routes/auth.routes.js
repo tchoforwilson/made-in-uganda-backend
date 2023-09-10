@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import authController from '../controllers/auth.controller.js';
+import eUserRole from '../utilities/enums/e.user-role.js';
 
 const router = Router();
 
@@ -12,5 +13,11 @@ router.post('/resetPassword/:token', authController.resetPassword);
 router.use(authController.protect);
 
 router.patch('/updateMyPassword', authController.updatePassword);
+
+router.post(
+  '/pay-subscription',
+  authController.restrictTo(eUserRole.USER),
+  authController.paySubscription
+);
 
 export default router;
