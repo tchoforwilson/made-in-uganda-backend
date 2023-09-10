@@ -11,7 +11,12 @@ const setSubscriptionUserId = (req, res, next) => {
   next();
 };
 
-const createSubscription = factory.createOne(Subscription);
+const createSubscription = (req, res) => {
+  res.status(500).json({
+    status: 'error',
+    message: 'This route is not defined! Please use /pay-subscription instead',
+  });
+};
 const getSubscription = factory.getOne(Subscription);
 const getAllSubscriptions = factory.getAll(Subscription);
 const updateSubscription = factory.updateOne(Subscription);
