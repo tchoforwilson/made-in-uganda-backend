@@ -62,7 +62,7 @@ const updateMe = catchAsync(async (req, res, next) => {
 
   res.status(200).json({
     status: 'success',
-    message: 'data updated!',
+    message: 'Account successfully updated!',
     data: {
       user: updatedUser,
     },
@@ -81,6 +81,7 @@ const deleteMe = catchAsync(async (req, res, next) => {
   // 2. Send response
   res.status(204).json({
     status: 'success',
+    message: 'Account successfully deleted!',
     data: null,
   });
 });

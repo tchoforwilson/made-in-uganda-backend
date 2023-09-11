@@ -45,6 +45,7 @@ const getOne = (Model, popOptions) =>
     // 4. Send response
     res.status(200).json({
       status: 'success',
+      message: 'Request successful!',
       data: doc,
     });
   });
@@ -66,7 +67,7 @@ const updateOne = (Model) =>
 
     res.status(200).json({
       status: 'success',
-      message: 'data updated',
+      message: 'Resource updated!',
       data: doc,
     });
   });
@@ -100,6 +101,7 @@ const getAll = (Model) =>
     // 4. SEND RESPONSE
     res.status(200).json({
       status: 'success',
+      message: 'Request successful!',
       results: docs.length,
       data: docs,
     });
@@ -125,7 +127,7 @@ const deleteOne = (Model) =>
     // 3. Send the response
     res.status(200).json({
       status: 'success',
-      message: 'data deleted',
+      message: 'Resource deleted!',
       data: doc,
     });
   });
@@ -170,6 +172,7 @@ const getDistinct = (Model, popOptions) =>
     // 8. Send results
     res.status(200).json({
       status: 'success',
+      message: 'Request successful!',
       data: docs,
     });
   });

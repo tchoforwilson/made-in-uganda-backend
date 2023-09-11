@@ -11,10 +11,11 @@ import { subcriptionIsExpired } from '../utilities/util.js';
 
 /**
  * @breif Generate user jwt sign token
- * @param {Object} -> User object
+ * @param {String} id User ID
+ * @return {String}
  */
-const signToken = (user) => {
-  return jwt.sign({ user }, config.jwt.secret, {
+const signToken = (id) => {
+  return jwt.sign({ id }, config.jwt.secret, {
     expiresIn: config.jwt.expiresIn,
   });
 };
@@ -29,7 +30,7 @@ const signToken = (user) => {
  */
 const createSendToken = (user, message, statusCode, req, res) => {
   // 1. Get token
-  const token = signToken(user);
+  const token = signToken(user._id);
 
   // 2. Set cookie token
   res.cookie('jwt', token, {
@@ -70,7 +71,7 @@ const signup = catchAsync(async (req, res, next) => {
   });
 
   // 3. Send response
-  createSendToken(newUser, 'Your registered', 201, req, res);
+  createSendToken(newUser, 'Successfully signup!', 201, req, res);
 });
 
 /**
@@ -96,7 +97,7 @@ const login = catchAsync(async (req, res, next) => {
   }
 
   // 5. If everything ok, send token to client
-  createSendToken(user, 'Your log in', 200, req, res);
+  createSendToken(user, 'Successfully login!', 200, req, res);
 });
 
 const protect = catchAsync(async (req, res, next) => {
@@ -121,7 +122,7 @@ const protect = catchAsync(async (req, res, next) => {
   const decoded = await promisify(jwt.verify)(token, config.jwt.secret);
 
   // 3. Check if user still exist's
-  const currentUser = await User.findById(decoded.user._id).populate({
+  const currentUser = await User.findById(decoded.id).populate({
     path: 'store',
   });
 
@@ -214,13 +215,7 @@ const paySubscription = catchAsync(async (req, res, next) => {
   await user.save({ validateBeforeSave: false });
 
   // 6. Send response
-  res.status(201).json({
-    status: 'success',
-    message: 'Subscription paid successfully',
-    data: {
-      user,
-    },
-  });
+  createSendToken(user, 'Subscription paid successfully', 201, req, res);
 });
 
 /**
@@ -256,7 +251,7 @@ const forgotPassword = catchAsync(async (req, res, next) => {
       // Send response
       res.status(200).json({
         status: 'success',
-        message: 'Token sent to email!',
+        message: 'Token sent to your email!',
       });
   } catch (error) {
     user.passwordResetToken = undefined;
@@ -297,7 +292,7 @@ const resetPassword = catchAsync(async (req, res, next) => {
 
   // 3) Update changedPasswordAt property for the user
   // 4) Log the user in, send JWT
-  createSendToken(user, 'Password resetted', 200, req, res);
+  createSendToken(user, 'Successfully reset password!', 200, req, res);
 });
 
 /**
@@ -319,7 +314,7 @@ const updatePassword = catchAsync(async (req, res, next) => {
   // User.findByIdAndUpdate will NOT work as intended!
 
   // 4) Log user in, send JWT
-  createSendToken(user, 'Password updated', 200, req, res);
+  createSendToken(user, 'Successfully changed password!', 200, req, res);
 });
 
 export default {
