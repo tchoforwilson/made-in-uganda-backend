@@ -6,6 +6,7 @@ import eUserRole from '../utilities/enums/e.user-role.js';
 
 const router = Router({ mergeParams: true });
 
+router.get('/search', productController.searchProducts);
 router.route('/count').get(productController.getProductCount);
 router.route('/distinct').get(productController.getDistinctProducts);
 router

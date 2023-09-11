@@ -93,6 +93,7 @@ export default {
   updateProduct: factory.updateOne(Product),
   getProduct: factory.getOne(Product, { path: 'store' }),
   deleteProduct: factory.deleteOne(Product),
+  searchProducts: factory.search(Product),
   getProductCount: factory.getCount(Product),
   getDistinctProducts: factory.getDistinct(Product, {
     from: 'stores',

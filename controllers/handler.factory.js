@@ -85,11 +85,7 @@ const getAll = (Model) =>
     if (req.params.storeId) filter = { store: req.params.storeId };
     if (req.params.categoryId) filter = { category: req.params.categoryId };
 
-    // 2. Build search regex for name
-    if (req.query.name)
-      req.query['name'] = { $regex: req.query.name, $options: 'i' };
-
-    // 3. EXECUTE THE QUERY
+    // 2. EXECUTE THE QUERY
     const features = new APIFeatures(Model.find(filter), req.query)
       .filter()
       .sort()
@@ -98,7 +94,7 @@ const getAll = (Model) =>
 
     const docs = await features.query;
 
-    // 4. SEND RESPONSE
+    // 3. SEND RESPONSE
     res.status(200).json({
       status: 'success',
       message: 'Request successful!',
@@ -129,6 +125,28 @@ const deleteOne = (Model) =>
       status: 'success',
       message: 'Resource deleted!',
       data: doc,
+    });
+  });
+
+/**
+ * @breif Search for a document in the database collection
+ * @param {Collection} Model -> Database collection
+ * @returns {function}
+ */
+const search = (Model) =>
+  catchAsync(async (req, res, next) => {
+    // 1. Get the query
+    const { q } = req.query;
+
+    // 2. Get the results
+    const results = await Model.find({
+      name: { $regex: q, $options: 'i' },
+    });
+
+    // 3. Send the response
+    res.status(200).json({
+      status: 'success',
+      data: results,
     });
   });
 
@@ -208,6 +226,7 @@ export default {
   updateOne,
   getAll,
   deleteOne,
+  search,
   getDistinct,
   getCount,
 };
