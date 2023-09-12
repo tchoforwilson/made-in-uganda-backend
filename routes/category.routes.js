@@ -11,7 +11,6 @@ const router = Router();
 router.use('/:categoryId/products', productRouter);
 
 router.get('/count', categoryController.getCategoryCount);
-router.get('/search', categoryController.searchCategories);
 
 router
   .route('/')

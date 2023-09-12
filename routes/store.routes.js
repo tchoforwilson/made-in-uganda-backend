@@ -11,7 +11,6 @@ const router = Router();
 router.use('/:storeId/products', productRouter);
 
 router.get('/count', storeController.getStoresCount);
-router.get('/search', storeController.searchStores);
 router.route('/distinct', storeController.getDistinctStores);
 router.get(
   '/myStore',

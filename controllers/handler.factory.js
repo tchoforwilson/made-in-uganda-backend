@@ -129,28 +129,6 @@ const deleteOne = (Model) =>
   });
 
 /**
- * @breif Search for a document in the database collection
- * @param {Collection} Model -> Database collection
- * @returns {function}
- */
-const search = (Model) =>
-  catchAsync(async (req, res, next) => {
-    // 1. Get the query
-    const { q } = req.query;
-
-    // 2. Get the results
-    const results = await Model.find({
-      name: { $regex: q, $options: 'i' },
-    });
-
-    // 3. Send the response
-    res.status(200).json({
-      status: 'success',
-      data: results,
-    });
-  });
-
-/**
  * @breif Query distinct data from a model
  * @param {Collection} Model Collection to get distinct items
  * @returns {Function}
@@ -226,7 +204,6 @@ export default {
   updateOne,
   getAll,
   deleteOne,
-  search,
   getDistinct,
   getCount,
 };
