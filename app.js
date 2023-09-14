@@ -19,7 +19,6 @@ import storeRouter from './routes/store.routes.js';
 import subscriptionRouter from './routes/subscription.routes.js';
 import productRouter from './routes/product.routes.js';
 import categoryRouter from './routes/category.routes.js';
-import searchRouter from './routes/search.routes.js';
 
 // Start express app
 const app = express();
@@ -86,7 +85,6 @@ app.use(`${config.prefix}/stores`, storeRouter);
 app.use(`${config.prefix}/products`, productRouter);
 app.use(`${config.prefix}/categories`, categoryRouter);
 app.use(`${config.prefix}/subscriptions`, subscriptionRouter);
-app.use(`${config.prefix}/search`, searchRouter);
 
 // INVALID ROUTES
 app.all('*', (req, res, next) => {

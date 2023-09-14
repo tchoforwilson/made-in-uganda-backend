@@ -10,6 +10,7 @@ const router = Router();
 // GET /store/234fad4/products
 router.use('/:storeId/products', productRouter);
 
+router.get('/search', storeController.searchStore);
 router.get('/count', storeController.getStoresCount);
 router.route('/distinct', storeController.getDistinctStores);
 router.get(

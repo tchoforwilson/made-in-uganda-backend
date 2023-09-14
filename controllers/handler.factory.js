@@ -97,7 +97,6 @@ const getAll = (Model) =>
     // 3. SEND RESPONSE
     res.status(200).json({
       status: 'success',
-      message: 'Request successful!',
       results: docs.length,
       data: docs,
     });
@@ -125,6 +124,23 @@ const deleteOne = (Model) =>
       status: 'success',
       message: 'Resource deleted!',
       data: doc,
+    });
+  });
+
+const search = (Model) =>
+  catchAsync(async (req, res, next) => {
+    // 1. Get the query
+    const { q } = req.query;
+
+    // 2. Get the results
+    const results = await Model.find({
+      name: { $regex: q, $options: 'i' },
+    });
+
+    // 3. Send the response
+    res.status(200).json({
+      status: 'success',
+      data: results,
     });
   });
 
@@ -168,7 +184,6 @@ const getDistinct = (Model, popOptions) =>
     // 8. Send results
     res.status(200).json({
       status: 'success',
-      message: 'Request successful!',
       data: docs,
     });
   });
@@ -204,6 +219,7 @@ export default {
   updateOne,
   getAll,
   deleteOne,
+  search,
   getDistinct,
   getCount,
 };

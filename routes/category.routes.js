@@ -10,6 +10,7 @@ const router = Router();
 // GET /category/234fad4/products
 router.use('/:categoryId/products', productRouter);
 
+router.get('/search', categoryController.searchCategory);
 router.get('/count', categoryController.getCategoryCount);
 
 router
