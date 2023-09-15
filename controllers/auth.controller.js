@@ -15,10 +15,14 @@ import { subcriptionIsExpired } from '../utilities/util.js';
  * @return {String}
  */
 const signToken = (user) => {
-  const { _id, role, subscription } = user;
-  return jwt.sign({ id: _id, role, subscription }, config.jwt.secret, {
-    expiresIn: config.jwt.expiresIn,
-  });
+  const { _id, role, subscriptionStatus } = user;
+  return jwt.sign(
+    { id: _id, role, subscription: subscriptionStatus },
+    config.jwt.secret,
+    {
+      expiresIn: config.jwt.expiresIn,
+    }
+  );
 };
 
 /**
