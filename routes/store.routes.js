@@ -13,6 +13,7 @@ router.use('/:storeId/products', productRouter);
 router.get('/search', storeController.searchStore);
 router.get('/count', storeController.getStoresCount);
 router.route('/distinct', storeController.getDistinctStores);
+
 router.get(
   '/myStore',
   authController.protect,
