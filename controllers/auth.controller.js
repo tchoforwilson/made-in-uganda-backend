@@ -14,15 +14,10 @@ import { subcriptionIsExpired } from '../utilities/util.js';
  * @param {Object} user User object
  * @return {String}
  */
-const signToken = (user) => {
-  const { _id, role, subscriptionStatus } = user;
-  return jwt.sign(
-    { id: _id, role, subscription: subscriptionStatus },
-    config.jwt.secret,
-    {
-      expiresIn: config.jwt.expiresIn,
-    }
-  );
+const signToken = (id) => {
+  return jwt.sign({ id }, config.jwt.secret, {
+    expiresIn: config.jwt.expiresIn,
+  });
 };
 
 /**
@@ -35,7 +30,7 @@ const signToken = (user) => {
  */
 const createSendToken = (user, message, statusCode, req, res) => {
   // 1. Get token
-  const token = signToken(user);
+  const token = signToken(user._id);
 
   // 2. Set cookie token
   res.cookie('jwt', token, {
