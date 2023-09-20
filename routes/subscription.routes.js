@@ -7,6 +7,8 @@ const router = Router({ mergeParams: true });
 
 router.use(authController.protect);
 
+router.get('/count', subscriptionController.subscriptionCount);
+
 router
   .route('/')
   .post(
