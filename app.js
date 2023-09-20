@@ -50,14 +50,22 @@ app.use(json({ limit: '10kb' }));
 app.use(urlencoded({ extended: true, limit: '10kb' }));
 app.use(cookieParser());
 
+// Allowed origin
+app.options('/', function (req, res) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header(
+    'Access-Control-Allow-Methods',
+    'GET, PATCH, POST, DELETE, OPTIONS'
+  );
+  res.header(
+    'Access-Control-Allow-Headers',
+    'Content-Type, Authorization, Content-Length, X-Requested-With'
+  );
+  res.send(200);
+});
+
 // Cross origin
 app.use(cors());
-
-// Allowed origin
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', config.origin);
-  next();
-});
 
 // Data sanitization against NoSQL query injection
 app.use(mongoSanitize());
