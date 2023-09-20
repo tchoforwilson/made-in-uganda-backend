@@ -21,6 +21,7 @@ const getSubscription = factory.getOne(Subscription);
 const getAllSubscriptions = factory.getAll(Subscription);
 const updateSubscription = factory.updateOne(Subscription);
 const deleteSubscription = factory.deleteOne(Subscription);
+const subscriptionCount = factory.getCount(Subscription);
 
 export default {
   setSubscriptionUserId,
@@ -29,4 +30,5 @@ export default {
   getAllSubscriptions,
   updateSubscription,
   deleteSubscription,
+  subscriptionCount,
 };
