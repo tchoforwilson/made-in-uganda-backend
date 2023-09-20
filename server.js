@@ -11,7 +11,11 @@ process.on('uncaughtException', (err) => {
 import app from './app.js';
 
 // Connect to database
-const DATABASE = config.db.db.replace('<PASSWORD>', config.db.password);
+const env = config.env;
+let DATABASE = config.db.db_dev;
+if (env === 'production') {
+  DATABASE = config.db.db.replace('<PASSWORD>', config.db.password);
+}
 
 mongoose
   .connect(DATABASE, { useNewUrlParser: true, useUnifiedTopology: true })
