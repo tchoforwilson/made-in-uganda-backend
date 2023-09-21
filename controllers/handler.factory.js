@@ -45,7 +45,6 @@ const getOne = (Model, popOptions) =>
     // 4. Send response
     res.status(200).json({
       status: 'success',
-      message: 'Request successful!',
       data: doc,
     });
   });
