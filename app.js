@@ -4,6 +4,7 @@ import hpp from 'hpp';
 import mongoSanitize from 'express-mongo-sanitize';
 import xss from 'xss-clean';
 import morgan from 'morgan';
+import compression from 'compression';
 import path from 'path';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
@@ -85,6 +86,8 @@ app.use(
     ],
   })
 );
+
+app.use(compression());
 
 // ROUTES
 app.use(`${config.prefix}/auth`, authRouter);
