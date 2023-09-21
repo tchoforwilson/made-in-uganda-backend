@@ -8,20 +8,16 @@ const router = Router({ mergeParams: true });
 
 router.route('/count').get(productController.getProductCount);
 router.get('/search', productController.searchProduct);
-
 router.route('/distinct').get(productController.getDistinctProducts);
 
 router
-  .route('/myStore-productCount')
+  .route('/store-productCount')
   .get(
     authController.protect,
     authController.restrictTo(eUserRole.USER),
     productController.setStoreParam,
     productController.getProductCount
   );
-router
-  .route('/top-products')
-  .get(productController.aliasTopProducts, productController.getAllProducts);
 router
   .route('/my-products')
   .get(
@@ -30,6 +26,10 @@ router
     productController.setStoreParam,
     productController.getAllProducts
   );
+
+router
+  .route('/top-products')
+  .get(productController.aliasTopProducts, productController.getAllProducts);
 
 router
   .route('/')
