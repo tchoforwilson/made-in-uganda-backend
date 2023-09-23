@@ -14,7 +14,7 @@ import app from './app.js';
 const env = config.env;
 let DATABASE = config.db.db_dev;
 if (env === 'production') {
-  DATABASE = config.db.db.replace('<PASSWORD>', config.db.password);
+  DATABASE = config.db.db.replace('PASSWORD', config.db.password);
 }
 
 mongoose
