@@ -169,7 +169,7 @@ const checkSubscriptionStatus = catchAsync(async (req, res, next) => {
 
   // 2. Check subcription status
   if (
-    user.subscriptionStatus === 'inactive' ||
+    user.subscriptionStatus === 'inactive' &&
     subcriptionIsExpired(user.lastPaymentDate)
   ) {
     return next(
