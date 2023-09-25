@@ -83,6 +83,7 @@ app.use(
       'amount',
       'subscriptionStatus',
       'datePaid',
+      'fee',
     ],
   })
 );
