@@ -50,6 +50,7 @@ const storeSchema = new Schema(
       },
       coordinates: [Number],
     },
+    fee: Number,
     user: {
       type: Schema.ObjectId,
       ref: 'User',
@@ -82,6 +83,21 @@ storeSchema.pre(/^find/, function (next) {
     path: 'user',
     select: 'username email _id id',
   });
+  next();
+});
+storeSchema.pre('save', async function (next) {
+  const numEmployees = this.employees;
+  let fee = 0;
+  if (numEmployees >= 0 && numEmployees <= 9) {
+    fee = 50000;
+  } else if (numEmployees >= 10 && numEmployees <= 30) {
+    fee = 100000;
+  } else if (numEmployees >= 31 && numEmployees <= 50) {
+    fee = 200000;
+  } else if (numEmployees >= 51) {
+    fee = 500000;
+  }
+  this.fee = fee;
   next();
 });
 
