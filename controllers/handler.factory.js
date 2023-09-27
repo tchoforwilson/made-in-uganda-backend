@@ -83,6 +83,7 @@ const getAll = (Model) =>
     let filter = {};
     if (req.params.storeId) filter = { store: req.params.storeId };
     if (req.params.categoryId) filter = { category: req.params.categoryId };
+    if (req.param.userId) filter = { user: req.params.userId };
 
     // 2. EXECUTE THE QUERY
     const features = new APIFeatures(Model.find(filter), req.query)

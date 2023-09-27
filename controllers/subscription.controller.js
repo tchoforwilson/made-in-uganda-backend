@@ -7,7 +7,7 @@ import factory from './handler.factory.js';
  */
 const setSubscriptionUserId = (req, res, next) => {
   // Allow for nested routes
-  if (!req.body.user) req.body.user = req.user.id || req.params.id;
+  if (!req.params.userId) req.body.userId = req.user.id;
   next();
 };
 
