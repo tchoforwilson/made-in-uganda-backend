@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken';
 import { promisify } from 'util';
 
 import User from '../models/user.model.js';
+import Store from '../models/store.model.js';
 import Subscription from '../models/subscription.model.js';
 import email from '../utilities/email.js';
 import config from '../configurations/config.js';
@@ -163,6 +164,35 @@ const restrictTo = (...roles) => {
   };
 };
 
+/**
+ * @breif Register user new store
+ */
+const registerStore = catchAsync(async (req, res, next) => {
+  // 1. Set store user
+  req.body.user = req.user._id;
+
+  // 2. Create new store
+  const store = await Store.create(req.body);
+
+  // 3. Check if store has been created
+  if (!store) {
+    return next(new AppError('Error creating store', 500));
+  }
+
+  // 4. Get user with new store object
+  const user = await User.findById(req.user._id).populate({ path: 'store' });
+
+  // 5. send response back
+  res.status(201).json({
+    status: 'success',
+    message: 'Store successfully registered',
+    data: { user },
+  });
+});
+
+/**
+ * @breif Check user subscription status
+ */
 const checkSubscriptionStatus = catchAsync(async (req, res, next) => {
   // 1. Get user
   const user = await User.findById(req.user.id);
@@ -188,7 +218,7 @@ const checkSubscriptionStatus = catchAsync(async (req, res, next) => {
  */
 const paySubscription = catchAsync(async (req, res, next) => {
   // 1. Get user
-  const user = await User.findById(req.user.id);
+  const user = await User.findById(req.user.id).populate({ path: 'store' });
 
   // 2. Check if subscription has expired
   if (
@@ -215,7 +245,11 @@ const paySubscription = catchAsync(async (req, res, next) => {
   await user.save({ validateBeforeSave: false });
 
   // 6. Send response
-  createSendToken(user, 'Subscription paid successfully', 201, req, res);
+  res.status(201).json({
+    status: 'success',
+    message: 'Subscription paid successfully',
+    data: { user },
+  });
 });
 
 /**
@@ -322,6 +356,7 @@ export default {
   login,
   protect,
   restrictTo,
+  registerStore,
   checkSubscriptionStatus,
   paySubscription,
   forgotPassword,
