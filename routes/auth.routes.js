@@ -15,6 +15,11 @@ router.use(authController.protect);
 router.patch('/updateMyPassword', authController.updatePassword);
 
 router.post(
+  '/register-store',
+  authController.restrictTo(eUserRole.USER),
+  authController.registerStore
+);
+router.post(
   '/pay-subscription',
   authController.restrictTo(eUserRole.USER),
   authController.paySubscription
