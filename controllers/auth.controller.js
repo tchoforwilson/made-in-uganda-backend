@@ -11,13 +11,24 @@ import AppError from '../utilities/appError.js';
 import { subcriptionIsExpired } from '../utilities/util.js';
 
 /**
- * @breif Generate user jwt sign token
- * @param {Object} user User object
+ * @breif Generate user jwt access token
+ * @param {String} id User id
  * @return {String}
  */
-const signToken = (id) => {
+const genAccessToken = (id) => {
   return jwt.sign({ id }, config.jwt.secret, {
     expiresIn: config.jwt.expiresIn,
+  });
+};
+
+/**
+ * @breif Generate jwt refresh token
+ * @param {String} id
+ * @returns {String}
+ */
+const genRefreshToken = (id) => {
+  return jwt.sign({ id }, config.jwt.refreshSecret, {
+    expiresIn: config.jwt.refreshExpiresIn,
   });
 };
 
@@ -30,14 +41,15 @@ const signToken = (id) => {
  * @param {res} Response
  */
 const createSendToken = (user, message, statusCode, req, res) => {
-  // 1. Get token
-  const token = signToken(user._id);
+  // 1. Get access token
+  const accessToken = genAccessToken(user._id);
 
-  // 2. Set cookie token
-  res.cookie('jwt', token, {
-    expires: new Date(
-      Date.now() + config.jwt.cookieExpires * 24 * 60 * 60 * 1000
-    ),
+  // 2. Get refresh token
+  const refreshToken = genRefreshToken(user._id);
+
+  // 3. Set cookie token
+  res.cookie('jwt', accessToken, {
+    expires: new Date(Date.now() + config.jwt.cookieExpires * 60 * 1000),
     httpOnly: true,
     secure: req.secure || req.headers['x-forwarded-proto'] === 'https',
   });
@@ -49,13 +61,43 @@ const createSendToken = (user, message, statusCode, req, res) => {
   res.status(statusCode).json({
     status: 'success',
     message,
-    token,
+    accessToken,
+    refreshToken,
     data: {
       user,
     },
   });
 };
 
+const refreshToken = catchAsync(async (req, res, next) => {
+  // 1. Get refresh token
+  const { refreshToken } = req.body;
+
+  // 2. Check refresh token
+  if (!refreshToken) {
+    return next(new AppError('Refresh token not found', 401));
+  }
+
+  // 3. Verify refresh token
+  const decoded = await promisify(jwt.verify)(
+    refreshToken,
+    config.jwt.refreshSecret
+  );
+  // ? Is it not proper to find the user here?
+  // 4. Check for id
+  if (!decoded.id) {
+    return next(new AppError('Invalid refresh token', 401));
+  }
+
+  // 5. Generate new access token
+  const accessToken = accessToken(decoded.id);
+
+  // 6. Send response
+  res.status(200).jsone({
+    status: 'success',
+    accessToken,
+  });
+});
 /**
  * @breif Controller to sigup a new user
  */
@@ -352,6 +394,7 @@ const updatePassword = catchAsync(async (req, res, next) => {
 });
 
 export default {
+  refreshToken,
   signup,
   login,
   protect,
