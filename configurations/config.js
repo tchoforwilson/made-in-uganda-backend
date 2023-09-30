@@ -28,7 +28,9 @@ const config = {
   jwt: {
     // The secret used to sign and validate signature
     secret: process.env.JWT_SECRET,
+    refreshSecret: process.env.JWT_REFRESH_SECRET,
     expiresIn: process.env.JWT_EXPIRES_IN,
+    refreshExpiresIn: process.env.JWT_REFRESH_EXPIRES_IN,
     cookieExpires: process.env.JWT_COOKIE_EXPIRES_IN,
   },
   /**
