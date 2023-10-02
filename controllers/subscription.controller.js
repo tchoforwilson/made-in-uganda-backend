@@ -17,18 +17,13 @@ const createSubscription = (req, res) => {
     message: 'This route is not defined! Please use /pay-subscription instead',
   });
 };
-const getSubscription = factory.getOne(Subscription);
-const getAllSubscriptions = factory.getAll(Subscription);
-const updateSubscription = factory.updateOne(Subscription);
-const deleteSubscription = factory.deleteOne(Subscription);
-const subscriptionCount = factory.getCount(Subscription);
 
 export default {
   setSubscriptionUserId,
   createSubscription,
-  getSubscription,
-  getAllSubscriptions,
-  updateSubscription,
-  deleteSubscription,
-  subscriptionCount,
+  getSubscription: factory.getOne(Subscription),
+  getAllSubscriptions: factory.getAll(Subscription),
+  updateSubscription: factory.updateOne(Subscription),
+  deleteSubscription: factory.deleteOne(Subscription),
+  subscriptionCount: factory.getCount(Subscription),
 };
