@@ -47,7 +47,7 @@ const createSendToken = (user, message, statusCode, req, res) => {
   // 2. Get refresh token
   const refreshToken = genRefreshToken(user._id);
 
-  // 3. Set cookie token
+  // 3. Set cookie access token
   res.cookie('jwt', accessToken, {
     expires: new Date(Date.now() + config.jwt.cookieExpires * 60 * 1000),
     httpOnly: true,
@@ -90,12 +90,12 @@ const refreshToken = catchAsync(async (req, res, next) => {
   }
 
   // 5. Generate new access token
-  const accessToken = accessToken(decoded.id);
+  const newToken = genAccessToken(decoded.id);
 
   // 6. Send response
-  res.status(200).jsone({
+  res.status(200).json({
     status: 'success',
-    accessToken,
+    data: newToken,
   });
 });
 /**
