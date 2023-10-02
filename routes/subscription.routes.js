@@ -3,7 +3,7 @@ import authController from '../controllers/auth.controller.js';
 import subscriptionController from '../controllers/subscription.controller.js';
 import eUserRole from '../utilities/enums/e.user-role.js';
 
-const router = Router({ mergeParams: true });
+const router = Router();
 
 router.use(authController.protect);
 
