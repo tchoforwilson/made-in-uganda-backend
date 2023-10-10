@@ -35,25 +35,22 @@ const uploadProductImages = upload.fields([
  * then product image in folder public/images/products
  */
 const resizeProductImages = catchAsync(async (req, res, next) => {
-  if (!req.files) return next();
+  if (!req.files.imageCover || !req.files.images) return next();
 
   // 1) Cover image
-  if (req.files.imageCover) {
-    req.body.imageCover = `product-${
-      req.params.id || req.user.store.id
-    }-${Date.now()}-cover.jpeg`; // Set image cover name field
+  req.body.imageCover = `product-${
+    req.params.id || req.user.store.id
+  }-${Date.now()}-cover.jpeg`; // Set image cover name field
 
-    //Upload image
-    await sharp(req.files.imageCover[0].buffer)
-      .toFormat('jpeg')
-      .jpeg({ quality: 90 })
-      .toFile(`public/images/products/${req.body.imageCover}`);
-  }
+  //Upload image
+  await sharp(req.files.imageCover[0].buffer)
+    .toFormat('jpeg')
+    .jpeg({ quality: 90 })
+    .toFile(`public/images/products/${req.body.imageCover}`);
 
   // 2) Images
-  if (req.files.images && req.files.images.length > 0) {
-    req.body.images = [];
-
+  req.body.images = [];
+  if (req.files.images.length > 0) {
     await Promise.all(
       req.files.images.map(async (file, i) => {
         const filename = `product-${
@@ -61,7 +58,6 @@ const resizeProductImages = catchAsync(async (req, res, next) => {
         }-${Date.now()}-${i + 1}.jpeg`;
 
         await sharp(file.buffer)
-          .resize(800, 800)
           .toFormat('jpeg')
           .jpeg({ quality: 90 })
           .toFile(`public/images/products/${filename}`);
