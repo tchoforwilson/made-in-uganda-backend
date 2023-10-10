@@ -82,6 +82,47 @@ const aliasTopProducts = (req, res, next) => {
   next();
 };
 
+const getTopStores = catchAsync(async (req, res, next) => {
+  // 1. Get stores with highest number of products
+  const docs = await Product.aggregate([
+    {
+      $group: {
+        _id: '$store',
+        count: { $sum: 1 },
+      },
+    },
+    {
+      $sort: { count: -1 },
+    },
+    {
+      $limit: 9,
+    },
+    {
+      $lookup: {
+        from: 'stores',
+        localField: '_id',
+        foreignField: '_id',
+        as: 'store',
+      },
+    },
+    {
+      $unwind: '$store',
+    },
+    {
+      $project: {
+        _id: 0,
+        name: '$store.name',
+      },
+    },
+  ]);
+
+  // 2. Send Response
+  res.status(200).json({
+    status: 'success',
+    data: docs,
+  });
+});
+
 export default {
   setProductStore,
   setStoreParam,
@@ -101,4 +142,5 @@ export default {
     foreignField: '_id',
     as: 'store',
   }),
+  getTopStores,
 };
