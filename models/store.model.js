@@ -11,9 +11,10 @@ const storeSchema = new Schema(
       type: String,
       required: true,
     },
-    employees: {
-      type: Number,
-      required: [true, 'Please provide number of employees'],
+    numOfEmployees: {
+      type: String,
+      enum: ['1-10', '10-30', '30-50', '50+'],
+      required: [true, 'Please select number of employees'],
     },
     telephone: {
       type: String,
