@@ -9,6 +9,7 @@ const router = Router({ mergeParams: true });
 router.route('/count').get(productController.getProductCount);
 router.get('/search', productController.searchProduct);
 router.route('/distinct').get(productController.getDistinctProducts);
+router.route('/top-stores').get(productController.getTopStores);
 
 router
   .route('/store-productCount')
