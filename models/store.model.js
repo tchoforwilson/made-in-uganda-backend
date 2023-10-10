@@ -68,6 +68,14 @@ const storeSchema = new Schema(
   }
 );
 
+// Number of employees and fee
+const numEmployeesFees = [
+  { employee: '1-10', amount: 5000 },
+  { employee: '10-30', amount: 100000 },
+  { employee: '30-50', amount: 200000 },
+  { employee: '50+', amount: 500000 },
+];
+
 // Virtual populate
 storeSchema.virtual('products', {
   ref: 'Product',
@@ -86,19 +94,14 @@ storeSchema.pre(/^find/, function (next) {
   });
   next();
 });
+
+/**
+ * @breif Set fee base on employee range
+ */
 storeSchema.pre('save', async function (next) {
-  const numEmployees = this.employees;
-  let fee = 0;
-  if (numEmployees >= 0 && numEmployees <= 9) {
-    fee = 50000;
-  } else if (numEmployees >= 10 && numEmployees <= 30) {
-    fee = 100000;
-  } else if (numEmployees >= 31 && numEmployees <= 50) {
-    fee = 200000;
-  } else if (numEmployees >= 51) {
-    fee = 500000;
-  }
-  this.fee = fee;
+  this.fee = numEmployeesFees.find(
+    (item) => item.employee === this.numOfEmployees
+  );
   next();
 });
 
