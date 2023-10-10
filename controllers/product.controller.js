@@ -112,6 +112,8 @@ const getTopStores = catchAsync(async (req, res, next) => {
       $project: {
         _id: 0,
         name: '$store.name',
+        logo: '$store.logo',
+        id: '$store.id',
       },
     },
   ]);
