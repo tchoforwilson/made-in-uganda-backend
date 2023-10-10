@@ -58,7 +58,7 @@ const saveLogo = catchAsync(async (req, res, next) => {
   // 4. Send back response
   res.status(200).json({
     status: 'success',
-    data: store.logo,
+    data: store,
   });
 });
 
