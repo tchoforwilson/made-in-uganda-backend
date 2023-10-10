@@ -13,7 +13,15 @@ router.use('/:storeId/products', productRouter);
 router.get('/search', storeController.searchStore);
 router.get('/count', storeController.getStoresCount);
 router.route('/distinct', storeController.getDistinctStores);
-
+router.post(
+  '/logo',
+  authController.protect,
+  authController.restrictTo(eUserRole.USER),
+  storeController.getMyStore,
+  storeController.uploadStoreLogo,
+  storeController.resizeStoreLogo,
+  storeController.saveLogo
+);
 router.get(
   '/myStore',
   authController.protect,
@@ -37,8 +45,6 @@ router
   .patch(
     authController.protect,
     authController.restrictTo(eUserRole.USER),
-    storeController.uploadStoreLogo,
-    storeController.resizeStoreLogo,
     storeController.updateStore
   )
   .delete(authController.protect, storeController.deleteStore);
