@@ -22,6 +22,7 @@ const storeSchema = new Schema(
     },
     logo: {
       type: String,
+      default: 'default.png',
     },
     address: {
       line_1: {
