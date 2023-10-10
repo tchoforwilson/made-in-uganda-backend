@@ -1,7 +1,5 @@
-import mongoose from 'mongoose';
+import {Schema, model} from 'mongoose';
 import AppError from '../utilities/appError.js';
-
-const { Schema } = mongoose;
 
 const productSchema = new Schema(
   {
@@ -131,6 +129,6 @@ productSchema.pre(/^find/, function (next) {
   next();
 });
 
-const Product = mongoose.model('Product', productSchema);
+const Product = model('Product', productSchema);
 
 export default Product;
