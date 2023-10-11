@@ -33,7 +33,7 @@ router
   .get(productController.aliasTopProducts, productController.getAllProducts);
 
 router
-  .route('/images')
+  .route('/:id/images')
   .post(
     authController.protect,
     authController.restrictTo(eUserRole.USER),
