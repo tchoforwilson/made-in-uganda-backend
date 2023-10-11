@@ -39,7 +39,7 @@ router
     authController.restrictTo(eUserRole.USER),
     productController.uploadProductImages,
     productController.resizeProductImages,
-    productController.updateProductImages
+    productController.saveProductImages
   );
 
 router
