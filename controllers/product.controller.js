@@ -81,7 +81,7 @@ const aliasTopProducts = (req, res, next) => {
 /**
  * @breif Update store product images
  */
-const updateStoreImage = catchAsync(async (req, res, next) => {
+const updateProductImages = catchAsync(async (req, res, next) => {
   // 1. Get Product
   const product = await Product.findById(req.params.id);
 
@@ -93,6 +93,7 @@ const updateStoreImage = catchAsync(async (req, res, next) => {
   // 3. Send response
   res.status(200).json({
     status: 'success',
+    message: 'Product images changed!',
     data: product,
   });
 });
@@ -145,7 +146,7 @@ export default {
   aliasTopProducts,
   uploadProductImages,
   resizeProductImages,
-  updateStoreImage,
+  updateProductImages,
   createProduct: factory.createOne(Product),
   getAllProducts: factory.getAll(Product),
   updateProduct: factory.updateOne(Product),

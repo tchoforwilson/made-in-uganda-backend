@@ -53,6 +53,7 @@ const saveLogo = catchAsync(async (req, res, next) => {
   // 3. Send back response
   res.status(200).json({
     status: 'success',
+    message: 'Store logo changed!',
     data: store,
   });
 });
