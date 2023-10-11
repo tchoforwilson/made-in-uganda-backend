@@ -35,7 +35,7 @@ const uploadProductImages = upload.fields([
  * then product image in folder public/images/products
  */
 const resizeProductImages = catchAsync(async (req, res, next) => {
-  if (!req.files.imageCover || !req.files.images) return next();
+  if (!req.files) return next();
 
   // 1) Cover image
   req.body.imageCover = `product-${
@@ -77,6 +77,25 @@ const aliasTopProducts = (req, res, next) => {
     'price,priceDiscount,percentageDiscount,currency,name,imageCover';
   next();
 };
+
+/**
+ * @breif Update store product images
+ */
+const updateStoreImage = catchAsync(async (req, res, next) => {
+  // 1. Get Product
+  const product = await Product.findById(req.params.id);
+
+  // 2. Save new images
+  product.imageCover = req.body.imageCover;
+  product.images = req.body.images;
+  await product.save({ validateBeforeSave: false });
+
+  // 3. Send response
+  res.status(200).json({
+    status: 'success',
+    data: product,
+  });
+});
 
 const getTopStores = catchAsync(async (req, res, next) => {
   // 1. Get stores with highest number of products
@@ -126,6 +145,7 @@ export default {
   aliasTopProducts,
   uploadProductImages,
   resizeProductImages,
+  updateStoreImage,
   createProduct: factory.createOne(Product),
   getAllProducts: factory.getAll(Product),
   updateProduct: factory.updateOne(Product),

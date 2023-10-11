@@ -1,5 +1,4 @@
 import sharp from 'sharp';
-import fs from 'fs';
 import Store from '../models/store.model.js';
 import factory from './handler.factory.js';
 import upload from '../utilities/upload.js';
@@ -47,15 +46,11 @@ const saveLogo = catchAsync(async (req, res, next) => {
   // 1. Get store
   const store = await Store.findById(req.params.id);
 
-  // 2. Delete previous store logo if it wasn't default
-  if (store.logo !== 'default.png') {
-    await fs.promises.unlink(`public/images/stores/${store.logo}`);
-  }
-  // 3. Save new logo
+  // 2. Save new logo
   store.logo = req.body.logo;
   await store.save({ validateBeforeSave: false });
 
-  // 4. Send back response
+  // 3. Send back response
   res.status(200).json({
     status: 'success',
     data: store,

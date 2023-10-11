@@ -7,6 +7,7 @@ import morgan from 'morgan';
 import compression from 'compression';
 import path from 'path';
 import cookieParser from 'cookie-parser';
+import bodyParser from 'body-parser';
 import cors from 'cors';
 import rateLimit from 'express-rate-limit';
 import { fileURLToPath } from 'url';
@@ -47,6 +48,7 @@ const limiter = rateLimit({
 app.use(limiter);
 
 // Body parser, reading data from body into req.body
+app.use(bodyParser.json());
 app.use(json({ limit: '10kb' }));
 app.use(urlencoded({ extended: true, limit: '10kb' }));
 app.use(cookieParser());

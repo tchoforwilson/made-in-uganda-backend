@@ -1,4 +1,4 @@
-import {Schema, model} from 'mongoose';
+import { Schema, model } from 'mongoose';
 import AppError from '../utilities/appError.js';
 
 const productSchema = new Schema(
@@ -18,8 +18,8 @@ const productSchema = new Schema(
     },
     brand: String,
     measurement: {
-      value: Number,
       unit: String,
+      value: Number,
     },
     price: {
       type: Number,

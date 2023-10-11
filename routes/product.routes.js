@@ -33,6 +33,16 @@ router
   .get(productController.aliasTopProducts, productController.getAllProducts);
 
 router
+  .route('/images')
+  .post(
+    authController.protect,
+    authController.restrictTo(eUserRole.USER),
+    productController.uploadProductImages,
+    productController.resizeProductImages,
+    productController.uploadProductImages
+  );
+
+router
   .route('/')
   .get(productController.getAllProducts)
   .post(

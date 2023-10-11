@@ -18,7 +18,7 @@ const config = {
    */
   db: {
     db: process.env.DATABASE,
-    db_dev: process.env.DATABASE_DEV,
+    db_dev: process.env.DATABASE,
     user: process.env.DATABASE_USER,
     password: process.env.DATABASE_PASSWORD,
   },

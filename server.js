@@ -13,7 +13,7 @@ import app from './app.js';
 // Connect to database
 const env = config.env;
 let DATABASE = config.db.db_dev;
-if (env === 'production') {
+if (env === 'production' || env === 'development') {
   DATABASE = config.db.db.replace('PASSWORD', config.db.password);
 }
 
