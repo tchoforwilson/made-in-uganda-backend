@@ -133,9 +133,10 @@ const search = (Model) =>
     const { q } = req.query;
 
     // 2. Get the results
-    const results = await Model.find({
-      name: { $regex: q, $options: 'i' },
-    });
+    const results = await Model.find(
+      { name: { $regex: q, $options: 'i' } },
+      'name id'
+    );
 
     // 3. Send the response
     res.status(200).json({
