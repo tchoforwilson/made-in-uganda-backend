@@ -17,8 +17,9 @@ const config = {
    * @breif Database for various environments
    */
   db: {
-    db: process.env.DATABASE,
-    db_dev: process.env.DATABASE,
+    prod: process.env.DATABASE_PROD,
+    dev: process.env.DATABASE_DEV,
+    test: process.env.DATABASE_TEST,
     user: process.env.DATABASE_USER,
     password: process.env.DATABASE_PASSWORD,
   },
